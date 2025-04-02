@@ -1,0 +1,15 @@
+export { default as galeri1 } from "./1.webp";
+export { default as galeri2 } from "./2.webp";
+export { default as galeri3 } from "./3.webp";
+export { default as galeri4 } from "./4.webp";
+export { default as galeri5 } from "./5.jpg";
+export { default as galeri6 } from "./6.jpg";
+export { default as galeri7 } from "./7.jpg";
+export { default as galeri8 } from "./8.jpg";
+export { default as galeri9 } from "./9.jpg";
+export { default as galeri10 } from "./10.jpg";
+export { default as galeri11 } from "./11.jpg";
+export { default as galeri12 } from "./12.webp";
+export { default as galeri13} from "./13.webp";
+export { default as galeri14 } from "./14.webp";
+export { default as galeri15 } from "./15.webp";
