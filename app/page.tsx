@@ -15,7 +15,16 @@ import "@style/globals.css";
 import { hero1, hero2, hero3 } from "@asset/hero";
 import logo from "@asset/Logo_Kiddos.png";
 import pendaftaran from "@asset/pendaftaran.png";
-import { guru1, guru2, guru3, guru4, guru5, guru6 } from "@asset/teacher";
+import {
+  guru1,
+  guru2,
+  guru3,
+  guru4,
+  guru5,
+  guru6,
+  guru7,
+  guru8,
+} from "@asset/teacher";
 import { galeri1, galeri2, galeri3, galeri4 } from "@asset/galery";
 import {
   course1,
@@ -78,10 +87,38 @@ const galeri = [galeri1, galeri2, galeri3, galeri4];
 const pengajar = [
   { name: "Ibu Frida", subject: "Guru PraCalis & Calistung", img: guru1 },
   { name: "Ms Deti", subject: "Guru Bahasa Inggris", img: guru2 },
-  { name: "Ibu Hana", subject: "Guru BTQ dan Mapel Matematika", img: guru3 },
+  { name: "Ibu Hana", subject: "Guru BTQ & Mapel Matematika", img: guru3 },
   { name: "Ms Dhifa", subject: "Guru Bahasa Inggris", img: guru4 },
   { name: "Ms Rara", subject: "Guru Prisma Kalkulator Tangan", img: guru5 },
-  { name: "Ibu Dewi", subject: "Guru Calistung dan Prisma", img: guru6 },
+  { name: "Ibu Dewi", subject: "Guru Calistung & Prisma", img: guru6 },
+  {
+    name: "Ibu Indri Dewi",
+    subject: "Guru Private Calistung & BTQ",
+    img: guru7,
+  },
+  { name: "Ms Tanti", subject: "Guru Calistung & BTQ", img: guru8 },
+];
+
+const branches = [
+  {
+    title: "Bimbel KIDDOS Zone Kenari",
+    address:
+      "Perumahan Taman Kenari, Blok D6 No 3, Cimahpar, Kec. Bogor Utara, Kota Bogor, Jawa Barat, Indonesia",
+  },
+  {
+    title: "Bimbel KIDDOS Zone Poren",
+    address:
+      "Perumahan Pondok Aren, Jl. Bali No.151, Ciluar, Kec. Bogor Utara, Kota Bogor, Jawa Barat",
+  },
+  {
+    title: "Bimbel KIDDOS Zone Alamanda",
+    address:
+      "Perumahan Mega Sentul Alamanda, Jl Adhenium 2, Blok R.15, Kec. Sukaraja, Kabupaten Bogor, Jawa Barat",
+  },
+  {
+    title: "Bimbel KIDDOS Zone Cimahpar",
+    address: "Kampung Petir RT 01 RW 04, Kel. Cimahpar, Kec. Bogor Utara, Kota Bogor, Jawa Barat",
+  },
 ];
 
 const sliderImages = [hero1, hero2, hero3];
@@ -398,21 +435,26 @@ export default function Home() {
 
       <section
         id="lokasi"
-        className="w-full mt-10 mx-auto px-4 py-16 bg-green-100 rounded-xl"
+        className="w-full py-10 mt-8 bg-gradient-to-b from-lime-500 to-lime-300 text-white"
       >
-        <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-gray-800 mb-4">Lokasi Kami</h2>
-          <p className="text-lg text-gray-700 mb-8">
-            Bimbel Kiddos Zone hadir untuk melayani Anda di berbagai lokasi.
-            Temukan kami di peta berikut.
-          </p>
-          <div className="relative w-full h-96 rounded-xl overflow-hidden shadow-xl">
-            <iframe
-              className="w-full h-full"
-              src="https://www.google.com/maps?q=-6.564248957266557,106.82375561447179&z=15&output=embed"
-              allowFullScreen
-              loading="lazy"
-            ></iframe>
+        <div className="max-w-5xl mx-auto px-4 baloo">
+          <h2 className="text-3xl font-bold text-center mb-8">Lokasi Kami</h2>
+
+          <div className="bg-white rounded-xl p-6 text-start text-gray-800">
+            <h3 className="text-2xl font-bold mb-4">
+              Cabang Bimbel KIDDOS Zone
+            </h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-2">
+              {branches.map((branch, index) => (
+                <div key={index} className="p-4">
+                  <h4 className="text-lg font-semibold text-green-600 mb-1">
+                    {branch.title}
+                  </h4>
+                  <p className="text-gray-700 text-sm mb-2">{branch.address}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>

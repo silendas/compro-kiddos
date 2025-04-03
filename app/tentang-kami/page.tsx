@@ -4,16 +4,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaGraduationCap } from "react-icons/fa";
 import logo from "@asset/Logo_Kiddos.png";
-import { guru1, guru2, guru3, guru4, guru5, guru6 } from "@asset/teacher";
+import { guru1, guru2, guru3, guru4, guru5, guru6, guru7, guru8 } from "@asset/teacher";
 import "@style/globals.css";
 
 const pengajar = [
   { name: "Ibu Frida", subject: "Guru PraCalis & Calistung", img: guru1 },
   { name: "Ms Deti", subject: "Guru Bahasa Inggris", img: guru2 },
-  { name: "Ibu Hana", subject: "Guru BTQ dan Mapel Matematika", img: guru3 },
+  { name: "Ibu Hana", subject: "Guru BTQ & Mapel Matematika", img: guru3 },
   { name: "Ms Dhifa", subject: "Guru Bahasa Inggris", img: guru4 },
   { name: "Ms Rara", subject: "Guru Prisma Kalkulator Tangan", img: guru5 },
-  { name: "Ibu Dewi", subject: "Guru Calistung dan Prisma", img: guru6 },
+  { name: "Ibu Dewi", subject: "Guru Calistung & Prisma", img: guru6 },
+  { name: "Ibu Indri Dewi", subject: "Guru Private Calistung & BTQ", img: guru7 },
+  { name: "Ms Tanti", subject: "Guru Calistung & BTQ", img: guru8 },
 ];
 
 export default function AboutUs() {

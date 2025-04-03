@@ -10,10 +10,10 @@ export default function Footer() {
   return (
     <footer className="bg-lime-300 text-green-700 p-5">
       <div className="container mx-auto max-w-7xl grid grid-cols-1 md:grid-cols-3 gap-6 text-sm md:text-lg">
-        <div className="text-center md:text-left max-w-xs mx-auto md:mx-0">
-          <h3 className="font-bold text-lg">Alamat Kami</h3>
-          <p>Jl. Perumahan Taman Kenari, RT.01/RW.11,</p>
-          <p>Tanah Baru, Kec. Bogor Utara, Kota Bogor</p>
+        <div className="text-center md:text-left mx-auto md:mx-0">
+          <h3 className="font-bold text-lg">Alamat Pusat</h3>
+          <p>Jl. Perumahan Taman Kenari, Blok D6 No 3 ,</p>
+          <p>Cimahpar, Kec. Bogor Utara, Kota Bogor</p>
           <p>Jawa Barat, Indonesia 16154</p>
         </div>
 
