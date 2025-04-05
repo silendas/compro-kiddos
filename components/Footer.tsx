@@ -14,7 +14,7 @@ export default function Footer() {
           <h3 className="font-bold text-lg">Alamat Pusat</h3>
           <p>Jl. Perumahan Taman Kenari, Blok D6 No 3 ,</p>
           <p>Cimahpar, Kec. Bogor Utara, Kota Bogor</p>
-          <p>Jawa Barat, Indonesia 16154</p>
+          <p>Jawa Barat, Indonesia 16155</p>
         </div>
 
         <div className="text-center">

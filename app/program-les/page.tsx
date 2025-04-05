@@ -80,7 +80,7 @@ const programBelajar = [
 
 export default function ProgramLes() {
   return (
-    <div className="max-w-5xl mx-auto p-4 min-h-[80vh] bg-gray-50">
+    <div className="max-w-5xl mx-auto p-4 min-h-[80vh]">
       <nav className="mb-4 text-sm text-gray-600" aria-label="Breadcrumb">
         <ol className="list-reset flex">
           <li>

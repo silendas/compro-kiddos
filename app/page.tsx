@@ -24,6 +24,8 @@ import {
   guru6,
   guru7,
   guru8,
+  guru9,
+  guru10,
 } from "@asset/teacher";
 import { galeri1, galeri2, galeri3, galeri4 } from "@asset/galery";
 import {
@@ -97,6 +99,8 @@ const pengajar = [
     img: guru7,
   },
   { name: "Ms Tanti", subject: "Guru Calistung & BTQ", img: guru8 },
+  { name: "Ms Icha", subject: "Guru PraCalis & Calistung", img: guru9 },
+  { name: "Ibu Reni", subject: "Guru Calistung & Prisma", img: guru10 },
 ];
 
 const branches = [
@@ -108,16 +112,16 @@ const branches = [
   {
     title: "Bimbel KIDDOS Zone Poren",
     address:
-      "Perumahan Pondok Aren, Jl. Bali No.151, Ciluar, Kec. Bogor Utara, Kota Bogor, Jawa Barat",
+      "Perumahan Pondok Aren, Jl. Bali No.151, Ciluar, Kec. Bogor Utara, Kota Bogor, Jawa Barat, Indonesia",
   },
   {
     title: "Bimbel KIDDOS Zone Alamanda",
     address:
-      "Perumahan Mega Sentul Alamanda, Jl Adhenium 2, Blok R.15, Kec. Sukaraja, Kabupaten Bogor, Jawa Barat",
+      "Perumahan Mega Sentul Alamanda, Jl Adhenium 2, Blok R.15, Kec. Sukaraja, Kabupaten Bogor, Jawa Barat. Indonesia",
   },
   {
     title: "Bimbel KIDDOS Zone Cimahpar",
-    address: "Kampung Petir RT 01 RW 04, Kel. Cimahpar, Kec. Bogor Utara, Kota Bogor, Jawa Barat",
+    address: "Kampung Petir RT 01 RW 04, Kel. Cimahpar, Kec. Bogor Utara, Kota Bogor, Jawa Barat, Indonesia",
   },
 ];
 

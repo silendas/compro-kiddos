@@ -4,7 +4,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaGraduationCap } from "react-icons/fa";
 import logo from "@asset/Logo_Kiddos.png";
-import { guru1, guru2, guru3, guru4, guru5, guru6, guru7, guru8 } from "@asset/teacher";
+import {
+  guru1,
+  guru2,
+  guru3,
+  guru4,
+  guru5,
+  guru6,
+  guru7,
+  guru8,
+  guru9,
+  guru10,
+} from "@asset/teacher";
 import "@style/globals.css";
 
 const pengajar = [
@@ -14,8 +25,14 @@ const pengajar = [
   { name: "Ms Dhifa", subject: "Guru Bahasa Inggris", img: guru4 },
   { name: "Ms Rara", subject: "Guru Prisma Kalkulator Tangan", img: guru5 },
   { name: "Ibu Dewi", subject: "Guru Calistung & Prisma", img: guru6 },
-  { name: "Ibu Indri Dewi", subject: "Guru Private Calistung & BTQ", img: guru7 },
+  {
+    name: "Ibu Indri Dewi",
+    subject: "Guru Private Calistung & BTQ",
+    img: guru7,
+  },
   { name: "Ms Tanti", subject: "Guru Calistung & BTQ", img: guru8 },
+  { name: "Ms Icha", subject: "Guru PraCalis & Calistung", img: guru9 },
+  { name: "Ibu Reni", subject: "Guru Calistung & Prisma", img: guru10 },
 ];
 
 export default function AboutUs() {
@@ -72,7 +89,10 @@ export default function AboutUs() {
         </div>
       </section>
 
-      <section id="informasi-pengajar" className="mt-5 px-5 py-8 bg-gray-100 md:bg-transparent rounded-lg">
+      <section
+        id="informasi-pengajar"
+        className="mt-5 px-5 py-8 bg-gray-100 md:bg-transparent rounded-lg"
+      >
         <div className="flex flex-col items-center mb-2">
           <div className="rounded-full bg-green-700 w-16 h-16 flex items-center justify-center mb-2">
             <FaGraduationCap size={40} className="text-white" />

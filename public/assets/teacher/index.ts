@@ -6,3 +6,5 @@ export { default as guru5 } from "./5.jpeg";
 export { default as guru6 } from "./6.jpeg";
 export { default as guru7 } from "./7.jpeg";
 export { default as guru8 } from "./8.jpeg";
+export { default as guru9 } from "./9.jpeg";
+export { default as guru10 } from "./10.jpeg";
