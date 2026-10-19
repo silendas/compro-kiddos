@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import {
   FaTimes,
   FaGlobe,
@@ -10,64 +9,68 @@ import {
   FaTiktok,
   FaFacebook,
 } from "react-icons/fa";
+import { SITE_CONFIG } from "@data/siteConfig";
 
 export default function FlyingButton() {
   const [isOpen, setIsOpen] = useState(false);
 
   const socialLinks = [
     {
-      href: "https://wa.me/6285156732275",
-      icon: <FaWhatsapp size={25} />,
+      href: SITE_CONFIG.social.whatsapp,
+      icon: <FaWhatsapp size={24} />,
       label: "WhatsApp",
       bg: "bg-green-500",
     },
     {
-      href: "https://www.instagram.com/bimbelkiddoszone",
-      icon: <FaInstagram size={25} />,
+      href: SITE_CONFIG.social.instagram,
+      icon: <FaInstagram size={24} />,
       label: "Instagram",
       bg: "bg-pink-500",
     },
     {
-      href: "https://www.tiktok.com/@bimbelkiddoszone1",
-      icon: <FaTiktok size={25} />,
+      href: SITE_CONFIG.social.tiktok,
+      icon: <FaTiktok size={24} />,
       label: "TikTok",
       bg: "bg-black",
     },
     {
-      href: "https://www.facebook.com/share/18e1n5uo3y/",
-      icon: <FaFacebook size={25} />,
+      href: SITE_CONFIG.social.facebook,
+      icon: <FaFacebook size={24} />,
       label: "Facebook",
       bg: "bg-blue-600",
     },
   ];
 
   return (
-    <div className="fixed bottom-5 right-5 flex flex-col items-end space-y-2 z-50">
+    <aside
+      className="fixed bottom-5 right-5 flex flex-col items-end space-y-2 z-50"
+      aria-label="Tombol Kontak Cepat Media Sosial"
+    >
       {isOpen && (
-        <div className="flex flex-col items-end space-y-2">
+        <div className="flex flex-col items-end space-y-2 animate-fade-in">
           {socialLinks.map((social, index) => (
-            <Link
+            <a
               key={index}
               href={social.href}
               target="_blank"
               rel="noopener noreferrer"
-              className={`flex items-center justify-center text-white p-2.5 rounded-full shadow-lg hover:opacity-80 transition duration-300 ${social.bg}`}
-              aria-label={`Buka ${social.label}`}
+              className={`flex items-center justify-center text-white p-2.5 rounded-full shadow-lg hover:scale-110 transition duration-300 ${social.bg}`}
+              aria-label={`Hubungi via ${social.label}`}
             >
               {social.icon}
-            </Link>
+            </a>
           ))}
         </div>
       )}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 transition duration-300 flex items-center justify-center"
+        className="bg-green-600 text-white p-3 rounded-full shadow-lg hover:bg-green-700 transition duration-300 flex items-center justify-center cursor-pointer"
         aria-label={
-          isOpen ? "Tutup tombol sosial media" : "Buka tombol sosial media"
+          isOpen ? "Tutup tombol sosial media" : "Buka tombol kontak sosial media"
         }
       >
         {isOpen ? <FaTimes size={22} /> : <FaGlobe size={26} />}
       </button>
-    </div>
+    </aside>
   );
 }

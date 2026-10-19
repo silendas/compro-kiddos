@@ -3,21 +3,45 @@ import Script from "next/script";
 import Navbar from "@comp/Navbar";
 import Footer from "@comp/Footer";
 import FlyingButton from "@comp/FlyingButton";
+import JsonLd from "@comp/JsonLd";
+import { SITE_CONFIG } from "@data/siteConfig";
 import "@style/globals.css";
 
 export const metadata: Metadata = {
-  title: "Bimbel Kiddos Zone - Bimbel Terbaik di Bogor",
-  description:
-    "Bimbingan Belajar di Bogor menyediakan bimbingan belajar terbaik untuk anak-anak dengan metode interaktif dan menyenangkan.",
-  keywords: "bimbel bogor, bimbingan belajar, les privat bogor, bimbel, les bogor, bimbel di bogor, les di bogor",
-  authors: [{ name: "Bimbel Kiddos Zone", url: "https://www.bimbelkiddoszone.com" }],
-  robots: "index, follow",
+  metadataBase: new URL(SITE_CONFIG.url),
+  title: {
+    default: "Bimbel Kiddos Zone - Bimbel & Les Privat Terbaik di Bogor",
+    template: "%s | Bimbel Kiddos Zone",
+  },
+  description: SITE_CONFIG.description,
+  keywords: SITE_CONFIG.keywords,
+  authors: [{ name: SITE_CONFIG.name, url: SITE_CONFIG.url }],
+  creator: SITE_CONFIG.name,
+  publisher: SITE_CONFIG.name,
+  formatDetection: {
+    telephone: true,
+    address: true,
+    email: false,
+  },
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   openGraph: {
     title: "Bimbel Kiddos Zone Bogor - Bimbel Terbaik di Bogor",
-    description:
-      "Bimbingan belajar di Bogor menyediakan bimbingan belajar terbaik untuk anak-anak dengan metode interaktif dan menyenangkan.",
-    url: "https://www.bimbelkiddoszone.com",
-    siteName: "Bimbel Kiddos Zone",
+    description: SITE_CONFIG.description,
+    url: SITE_CONFIG.url,
+    siteName: SITE_CONFIG.name,
     type: "website",
     locale: "id_ID",
     images: [
@@ -25,15 +49,14 @@ export const metadata: Metadata = {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Bimbel Kiddos Zone Logo",
+        alt: "Bimbel Kiddos Zone Logo & Banner",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Bimbel Kiddos Zone Bogor - Bimbel terbaik di Bogor",
-    description:
-      "Bimbingan Belajar di Bogor menyediakan bimbingan belajar terbaik untuk anak-anak dengan metode interaktif dan menyenangkan.",
+    title: "Bimbel Kiddos Zone Bogor - Bimbel Terbaik di Bogor",
+    description: SITE_CONFIG.description,
     images: ["/og-image.jpg"],
   },
 };
@@ -42,8 +65,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="id">
       <head>
+        <JsonLd />
         <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=G-TN36DG67E8`}
+          src="https://www.googletagmanager.com/gtag/js?id=G-TN36DG67E8"
           strategy="afterInteractive"
         />
         <Script id="google-analytics" strategy="afterInteractive">

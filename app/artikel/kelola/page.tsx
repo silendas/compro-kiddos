@@ -57,7 +57,7 @@ export default function KelolaArtikel() {
   };
 
   return (
-    <div className="mx-auto p-2 md:p-6 min-h-[80vh]">
+    <div className="max-w-5xl mx-auto px-4 pt-6 md:pt-10 pb-16 min-h-[80vh]">
       <h1 className="text-3xl font-bold mb-6 text-center">Kelola Artikel</h1>
 
       {message && (

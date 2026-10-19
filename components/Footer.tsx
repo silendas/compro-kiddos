@@ -5,67 +5,90 @@ import {
   FaWhatsapp,
   FaPhoneAlt,
 } from "react-icons/fa";
+import { SITE_CONFIG } from "@data/siteConfig";
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer className="bg-lime-300 text-green-700 p-5">
-      <div className="container mx-auto max-w-7xl grid grid-cols-1 md:grid-cols-3 gap-6 text-sm md:text-lg">
-        <div className="text-center md:text-left mx-auto md:mx-0">
-          <h3 className="font-bold text-lg">Alamat Pusat</h3>
-          <p>Jl. Perumahan Taman Kenari, Blok D6 No 3 ,</p>
-          <p>Cimahpar, Kec. Bogor Utara, Kota Bogor</p>
-          <p>Jawa Barat, Indonesia 16155</p>
+    <footer className="bg-lime-300 text-green-700 p-6 md:p-10 border-t border-lime-400">
+      <div className="container mx-auto max-w-7xl grid grid-cols-1 md:grid-cols-3 gap-8 text-sm md:text-base">
+        <div className="text-center md:text-left">
+          <h3 className="font-bold text-lg mb-2 baloo">Alamat Pusat</h3>
+          <p>{SITE_CONFIG.contact.address.street},</p>
+          <p>
+            {SITE_CONFIG.contact.address.village}, Kec.{" "}
+            {SITE_CONFIG.contact.address.subdistrict}, {SITE_CONFIG.contact.address.city}
+          </p>
+          <p>
+            {SITE_CONFIG.contact.address.province}, Indonesia{" "}
+            {SITE_CONFIG.contact.address.postalCode}
+          </p>
         </div>
 
         <div className="text-center">
-          <h3 className="font-bold text-lg">Ikuti Kami</h3>
+          <h3 className="font-bold text-lg mb-2 baloo">Media Sosial</h3>
+          <p className="text-sm text-green-800 mb-3">
+            Ikuti kami untuk update info dan kegiatan seru anak:
+          </p>
           <div className="flex justify-center gap-4 mt-2">
             <a
-              href="https://www.instagram.com/bimbelkiddoszone"
+              href={SITE_CONFIG.social.instagram}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Instagram Bimbel Kiddos Zone"
+              className="p-2.5 bg-white rounded-full shadow hover:scale-110 transition duration-300"
             >
-              <FaInstagram className="w-6 h-6 text-red-600 hover:text-red-800 transition duration-300" />
+              <FaInstagram className="w-5 h-5 text-red-600" />
             </a>
             <a
-              href="https://www.facebook.com/share/18e1n5uo3y/"
+              href={SITE_CONFIG.social.facebook}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Facebook Bimbel Kiddos Zone"
+              className="p-2.5 bg-white rounded-full shadow hover:scale-110 transition duration-300"
             >
-              <FaFacebookF className="w-6 h-6 text-blue-600 hover:text-blue-800 transition duration-300" />
+              <FaFacebookF className="w-5 h-5 text-blue-600" />
             </a>
             <a
-              href="https://www.tiktok.com/@bimbelkiddoszone1"
+              href={SITE_CONFIG.social.tiktok}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="TikTok Bimbel Kiddos Zone"
+              className="p-2.5 bg-white rounded-full shadow hover:scale-110 transition duration-300"
             >
-              <FaTiktok className="w-6 h-6 text-black hover:text-gray-700 transition duration-300" />
+              <FaTiktok className="w-5 h-5 text-black" />
             </a>
           </div>
         </div>
 
-        <div className="text-center gap-1 md:text-left max-w-xs mx-auto md:mx-0">
-          <h3 className="font-bold text-lg">Hubungi Kami</h3>
-          <p className="flex items-center justify-center md:justify-start gap-2">
-            <FaWhatsapp className="w-5 h-5 text-green-600" />
+        <div className="text-center md:text-left">
+          <h3 className="font-bold text-lg mb-2 baloo">Kontak Kami</h3>
+          <p className="flex items-center justify-center md:justify-start gap-2 mb-2">
+            <FaWhatsapp className="w-5 h-5 text-green-600 flex-shrink-0" />
             <a
-              href="https://wa.me/6285156732275"
+              href={SITE_CONFIG.social.whatsapp}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-green-900"
+              className="hover:text-green-900 font-medium"
             >
-              085-15673-2275
+              {SITE_CONFIG.contact.phone} (WhatsApp)
             </a>
           </p>
           <p className="flex items-center justify-center md:justify-start gap-2">
-            <FaPhoneAlt className="w-5 h-5 text-gray-700" />
-            085-15673-2275
+            <FaPhoneAlt className="w-4 h-4 text-gray-700 flex-shrink-0" />
+            <a
+              href={`tel:+${SITE_CONFIG.contact.whatsappNumber}`}
+              className="hover:text-green-900 font-medium"
+            >
+              {SITE_CONFIG.contact.phone}
+            </a>
           </p>
         </div>
       </div>
 
-      <div className="text-center text-xs md:text-sm font-semibold mt-4">
-        &copy; 2025 Bimbel Kiddos Zone. Hak Cipta Dilindungi.
+      <div className="text-center text-xs md:text-sm font-semibold mt-8 pt-4 border-t border-lime-400">
+        &copy; {currentYear} {SITE_CONFIG.name}. Hak Cipta Dilindungi.
       </div>
     </footer>
   );

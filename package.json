@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@fontsource/baloo-2": "^5.2.5",
-    "compro-kiddos": "file:",
     "firebase": "^11.6.0",
     "next": "15.2.4",
     "react": "^19.0.0",

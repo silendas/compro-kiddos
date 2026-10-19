@@ -4,11 +4,10 @@ import { doc, getDoc } from "firebase/firestore";
 
 export async function GET(
   request: Request,
-  context: unknown
+  props: { params: Promise<{ id: string }> }
 ): Promise<Response> {
-  const { params } = context as { params: { id: string } };
   try {
-    const { id } = params;
+    const { id } = await props.params;
     const docRef = doc(db, "artikel", id);
     const docSnap = await getDoc(docRef);
 
