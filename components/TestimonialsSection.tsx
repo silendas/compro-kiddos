@@ -1,17 +1,31 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { FaStar, FaQuoteLeft, FaWhatsapp } from "react-icons/fa";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 
-import { TESTIMONIALS_DATA } from "@data/testimonials";
+import { TESTIMONIALS_DATA, TestimonialItem } from "@data/testimonials";
+import { getTestimonials } from "@lib/testimonialService";
 import { SITE_CONFIG } from "@data/siteConfig";
 
 import "swiper/css";
 import "swiper/css/pagination";
 
 export default function TestimonialsSection() {
+  const [testimonials, setTestimonials] = useState<TestimonialItem[]>(TESTIMONIALS_DATA);
+
+  useEffect(() => {
+    getTestimonials()
+      .then((data) => {
+        if (data && data.length > 0) {
+          setTestimonials(data);
+        }
+      })
+      .catch((err) => console.warn("Memuat testimoni Firestore fallback:", err));
+  }, []);
+
   const whatsappReviewUrl = `https://wa.me/${SITE_CONFIG.contact.whatsappNumber}?text=${encodeURIComponent(
     "Halo Admin Bimbel Kiddos Zone, saya ingin membagikan testimoni / review mengenai pengalaman belajar ananda di Kiddos Zone:"
   )}`;
@@ -69,7 +83,7 @@ export default function TestimonialsSection() {
             modules={[Autoplay, Pagination]}
             className="w-full !pb-12"
           >
-            {TESTIMONIALS_DATA.map((item) => (
+            {testimonials.map((item) => (
               <SwiperSlide key={item.id} className="h-auto">
                 <div className="h-full bg-white rounded-3xl p-7 md:p-8 border border-pink-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between text-center relative group">
                   {/* Subtle top quote decoration */}

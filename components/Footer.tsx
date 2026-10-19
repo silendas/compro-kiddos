@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   FaInstagram,
   FaFacebookF,
@@ -87,8 +88,14 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="text-center text-xs md:text-sm font-semibold mt-8 pt-4 border-t border-lime-400">
-        &copy; {currentYear} {SITE_CONFIG.name}. Hak Cipta Dilindungi.
+      <div className="text-xs md:text-sm font-semibold mt-8 pt-4 border-t border-lime-400 flex flex-col sm:flex-row items-center justify-between gap-2 max-w-7xl mx-auto text-green-900">
+        <p>&copy; {currentYear} {SITE_CONFIG.name}. Hak Cipta Dilindungi.</p>
+        <Link
+          href="/admin"
+          className="text-xs text-green-800 hover:text-green-950 underline opacity-80 hover:opacity-100 transition"
+        >
+          Portal Admin
+        </Link>
       </div>
     </footer>
   );

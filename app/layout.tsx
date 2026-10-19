@@ -4,6 +4,7 @@ import Navbar from "@comp/Navbar";
 import Footer from "@comp/Footer";
 import FlyingButton from "@comp/FlyingButton";
 import JsonLd from "@comp/JsonLd";
+import { AuthProvider } from "@lib/authContext";
 import { SITE_CONFIG } from "@data/siteConfig";
 import "@style/globals.css";
 
@@ -80,10 +81,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </Script>
       </head>
       <body className="font-poppins bg-white">
-        <Navbar />
-        <FlyingButton />
-        <main>{children}</main>
-        <Footer />
+        <AuthProvider>
+          <Navbar />
+          <FlyingButton />
+          <main>{children}</main>
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );

@@ -1,14 +1,24 @@
 "use client";
 
 import { useEffect, useState, FormEvent } from "react";
+import Link from "next/link";
 import {
   getArticles,
   addArticle,
   deleteArticle,
   Article,
 } from "@lib/articleService";
+import { ProtectedRoute } from "@lib/authContext";
 
 export default function KelolaArtikel() {
+  return (
+    <ProtectedRoute>
+      <KelolaArtikelContent />
+    </ProtectedRoute>
+  );
+}
+
+function KelolaArtikelContent() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
@@ -60,9 +70,17 @@ export default function KelolaArtikel() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 pt-6 md:pt-10 pb-16 min-h-[80vh]">
-      <h1 className="text-3xl font-bold mb-6 text-center baloo text-gray-800">
-        Kelola Artikel
-      </h1>
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-3 mb-6">
+        <h1 className="text-3xl font-bold baloo text-gray-800">
+          Kelola Artikel
+        </h1>
+        <Link
+          href="/admin"
+          className="bg-teal-600 hover:bg-teal-700 text-white font-bold text-sm px-4 py-2 rounded-xl transition"
+        >
+          &larr; Buka Dashboard Admin
+        </Link>
+      </div>
 
       {message && (
         <p className="mb-4 text-center text-green-600 font-medium bg-green-50 py-2 rounded-lg border border-green-200">
