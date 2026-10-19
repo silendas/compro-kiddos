@@ -22,10 +22,29 @@ footer {
   font-family: "Baloo 2", sans-serif;
 }
 
-.swiper-pagination-bullet {
+/* Hero banner pagination (white dots over dark/green banner) */
+.hero-slider .swiper-pagination-bullet,
+section[aria-label="Banner Utama"] .swiper-pagination-bullet {
   background-color: white !important;
+  opacity: 0.7;
 }
 
-.swiper-pagination-bullet-active {
+.hero-slider .swiper-pagination-bullet-active,
+section[aria-label="Banner Utama"] .swiper-pagination-bullet-active {
   background-color: white !important;
+  opacity: 1;
+}
+
+/* Testimonials slider pagination (pink dots over light background) */
+#testimoni .swiper-pagination-bullet {
+  background-color: #f472b6 !important;
+  opacity: 0.4;
+  transition: all 0.3s ease;
+}
+
+#testimoni .swiper-pagination-bullet-active {
+  background-color: #ec4899 !important;
+  opacity: 1;
+  width: 22px !important;
+  border-radius: 9999px !important;
 }

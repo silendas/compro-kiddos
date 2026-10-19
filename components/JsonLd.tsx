@@ -33,6 +33,13 @@ export default function JsonLd() {
           SITE_CONFIG.social.facebook,
           SITE_CONFIG.social.tiktok,
         ],
+        aggregateRating: {
+          "@type": "AggregateRating",
+          ratingValue: "5.0",
+          reviewCount: "6",
+          bestRating: "5",
+          worstRating: "1",
+        },
         department: SITE_CONFIG.branches.map((branch) => ({
           "@type": "EducationalOrganization",
           name: branch.title,

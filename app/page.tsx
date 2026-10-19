@@ -4,6 +4,7 @@ import { FaWhatsapp, FaGraduationCap, FaBook, FaMapMarkerAlt } from "react-icons
 
 import HeroSlider from "@comp/HeroSlider";
 import HomeArticles from "@comp/HomeArticles";
+import TestimonialsSection from "@comp/TestimonialsSection";
 
 import logo from "@asset/Logo_Kiddos.png";
 import pendaftaran from "@asset/pendaftaran.png";
@@ -278,6 +279,9 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+
+      {/* Cerita & Testimoni dari Orang Tua & Siswa */}
+      <TestimonialsSection />
 
       {/* Artikel Terbaru Section */}
       <section
