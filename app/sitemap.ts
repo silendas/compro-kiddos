@@ -2,6 +2,7 @@ import { MetadataRoute } from "next";
 import { SITE_CONFIG } from "@data/siteConfig";
 import { db } from "@lib/firebase";
 import { collection, getDocs } from "firebase/firestore";
+export const dynamic = "force-static";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = SITE_CONFIG.url;

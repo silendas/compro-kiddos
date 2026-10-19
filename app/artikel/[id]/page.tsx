@@ -1,20 +1,27 @@
 import type { Metadata } from "next";
 import ArticleDetailView from "@comp/ArticleDetailView";
-import { db } from "@lib/firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { getAllArticleIds, getArticleById } from "@lib/articleService";
 
 interface PageProps {
   params: Promise<{ id: string }>;
 }
 
+export async function generateStaticParams(): Promise<{ id: string }[]> {
+  try {
+    const ids = await getAllArticleIds();
+    if (ids.length > 0) return ids;
+  } catch (e) {
+    console.warn("generateStaticParams offline:", e);
+  }
+  return [{ id: "default" }];
+}
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { id } = await params;
   try {
-    const docRef = doc(db, "artikel", id);
-    const docSnap = await getDoc(docRef);
+    const data = await getArticleById(id);
 
-    if (docSnap.exists()) {
-      const data = docSnap.data();
+    if (data) {
       const title = data.title || "Artikel";
       const snippet = data.content
         ? data.content.substring(0, 160).replace(/\n/g, " ")

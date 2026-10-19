@@ -4,13 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FiArrowLeft } from "react-icons/fi";
-
-type Article = {
-  id: string;
-  title: string;
-  content: string;
-  createdAt?: { seconds: number; nanoseconds: number };
-};
+import { getArticleById, Article } from "@lib/articleService";
 
 export default function ArticleDetailView({ id }: { id: string }) {
   const router = useRouter();
@@ -19,17 +13,13 @@ export default function ArticleDetailView({ id }: { id: string }) {
 
   useEffect(() => {
     if (!id) return;
-    fetch(`/api/artikel/${id}`)
-      .then((res) => {
-        if (!res.ok) throw new Error("Gagal mengambil artikel");
-        return res.json();
-      })
+    getArticleById(id)
       .then((data) => {
         setArticle(data);
         setLoading(false);
       })
       .catch((err) => {
-        console.error(err);
+        console.error("Gagal mengambil artikel:", err);
         setLoading(false);
       });
   }, [id]);
@@ -43,7 +33,7 @@ export default function ArticleDetailView({ id }: { id: string }) {
     );
   }
 
-  if (!article || (article as { error?: string }).error) {
+  if (!article) {
     return (
       <div className="text-center py-16">
         <p className="text-red-500 text-lg mb-4">Artikel tidak ditemukan.</p>

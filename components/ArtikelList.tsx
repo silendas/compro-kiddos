@@ -2,13 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-
-export type Article = {
-  id: string;
-  title: string;
-  content: string;
-  createdAt: { seconds: number; nanoseconds: number };
-};
+import { getArticles, Article } from "@lib/articleService";
 
 const MAX_SNIPPET_LENGTH = 300;
 
@@ -17,10 +11,9 @@ export default function ArtikelList() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/artikel")
-      .then((res) => res.json())
+    getArticles()
       .then((data) => {
-        setArticles(data.articles || []);
+        setArticles(data);
         setLoading(false);
       })
       .catch((err) => {
@@ -85,7 +78,7 @@ export default function ArtikelList() {
               )}
             </div>
             <small className="mt-6 text-gray-500 block">
-              {new Date(article.createdAt.seconds * 1000).toLocaleDateString(
+              {new Date((article.createdAt?.seconds || Date.now() / 1000) * 1000).toLocaleDateString(
                 "id-ID",
                 {
                   day: "numeric",

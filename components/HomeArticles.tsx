@@ -2,13 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-
-interface Article {
-  id: string;
-  title: string;
-  content: string;
-  createdAt: { seconds: number; nanoseconds: number };
-}
+import { getArticles, Article } from "@lib/articleService";
 
 const MAX_SNIPPET_LENGTH = 180;
 
@@ -17,10 +11,9 @@ export default function HomeArticles() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/artikel?limit=3")
-      .then((res) => res.json())
+    getArticles(3)
       .then((data) => {
-        setArticles(data.articles || []);
+        setArticles(data);
         setLoading(false);
       })
       .catch((err) => {
@@ -64,7 +57,7 @@ export default function HomeArticles() {
           </div>
           <div className="mt-4 pt-4 border-t border-gray-200 flex justify-between items-center text-sm">
             <span className="text-gray-500">
-              {new Date(article.createdAt.seconds * 1000).toLocaleDateString(
+              {new Date((article.createdAt?.seconds || Date.now() / 1000) * 1000).toLocaleDateString(
                 "id-ID",
                 {
                   day: "numeric",
