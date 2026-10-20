@@ -202,7 +202,7 @@ export default function KelolaReviewPage() {
             </Link>
             <div>
               <h1 className="text-lg sm:text-xl font-extrabold text-gray-800 baloo leading-none flex items-center gap-2">
-                <FaCommentDots className="text-pink-500" /> Kelola Review &amp; Testimoni
+                <FaCommentDots className="text-orange-500" /> Kelola Review &amp; Testimoni
               </h1>
               <p className="text-xs text-gray-500 mt-0.5">
                 Admin: <span className="font-semibold text-gray-700">{user?.email}</span>
@@ -214,7 +214,7 @@ export default function KelolaReviewPage() {
             <Link
               href="/#testimoni"
               target="_blank"
-              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100 px-3 py-1.5 rounded-lg border border-teal-200 transition"
+              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-orange-800 bg-amber-100/70 hover:bg-amber-200/80 px-3 py-1.5 rounded-lg border border-amber-300 transition"
             >
               <FaExternalLinkAlt className="text-xs" /> Lihat di Web
             </Link>
@@ -247,19 +247,19 @@ export default function KelolaReviewPage() {
       {/* Konten Utama */}
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 space-y-8">
         {/* Tombol Salin Default */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-pink-50 border border-pink-200 rounded-2xl p-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-amber-50 border border-amber-200 rounded-2xl p-4">
           <div>
-            <h2 className="text-sm sm:text-base font-bold text-pink-900">
+            <h2 className="text-sm sm:text-base font-bold text-orange-950">
               Sinkronisasi Data Review
             </h2>
-            <p className="text-xs text-pink-700 mt-0.5">
+            <p className="text-xs text-amber-800 mt-0.5">
               Review yang tersimpan akan langsung tampil pada slider ulasan di halaman beranda.
             </p>
           </div>
           <button
             type="button"
             onClick={handleSeedDefaults}
-            className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-white bg-pink-600 hover:bg-pink-700 px-4 py-2 rounded-xl shadow-sm transition shrink-0"
+            className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-white bg-orange-500 hover:bg-orange-600 px-4 py-2 rounded-xl shadow-sm transition shrink-0"
           >
             <FaCloudDownloadAlt className="text-base" /> Muat Review Default
           </button>
@@ -271,11 +271,11 @@ export default function KelolaReviewPage() {
             <h2 className="text-xl font-bold text-gray-800 baloo flex items-center gap-2">
               {editingId ? (
                 <>
-                  <FaEdit className="text-pink-600" /> Edit Data Review
+                  <FaEdit className="text-orange-500" /> Edit Data Review
                 </>
               ) : (
                 <>
-                  <FaPlus className="text-pink-600" /> Form Input Review Baru
+                  <FaPlus className="text-orange-500" /> Form Input Review Baru
                 </>
               )}
             </h2>
@@ -291,7 +291,7 @@ export default function KelolaReviewPage() {
             <div className="bg-gray-50 border border-gray-200 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <div className="relative shrink-0">
                 {avatar ? (
-                  <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-pink-400 shadow-sm relative group">
+                  <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-orange-400 shadow-sm relative group">
                     <img
                       src={avatar}
                       alt="Preview Avatar"
@@ -307,7 +307,7 @@ export default function KelolaReviewPage() {
                     </button>
                   </div>
                 ) : (
-                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-pink-400 to-rose-400 flex items-center justify-center text-white font-extrabold text-2xl shadow-sm baloo border-2 border-white">
+                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-amber-400 to-orange-400 flex items-center justify-center text-white font-extrabold text-2xl shadow-sm baloo border-2 border-white">
                     {name.trim()
                       ? name
                           .split(" ")
@@ -329,7 +329,7 @@ export default function KelolaReviewPage() {
 
                 <div className="mt-3 flex flex-wrap items-center gap-2">
                   <label className="inline-flex items-center gap-2 bg-white hover:bg-gray-100 text-gray-700 text-xs font-bold px-3.5 py-2 rounded-xl border border-gray-300 shadow-sm cursor-pointer transition">
-                    <FaCamera className="text-pink-500 text-sm" />
+                    <FaCamera className="text-orange-500 text-sm" />
                     <span>{avatar ? "Ganti Foto" : "Unggah Foto Avatar"}</span>
                     <input
                       type="file"
@@ -351,8 +351,8 @@ export default function KelolaReviewPage() {
                   )}
 
                   {compressing && (
-                    <span className="text-xs text-pink-600 font-medium flex items-center gap-1.5">
-                      <div className="w-3.5 h-3.5 border-2 border-pink-500 border-t-transparent rounded-full animate-spin" />
+                    <span className="text-xs text-orange-600 font-medium flex items-center gap-1.5">
+                      <div className="w-3.5 h-3.5 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
                       Sedang mengompres foto...
                     </span>
                   )}
@@ -372,7 +372,7 @@ export default function KelolaReviewPage() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Contoh: Ibu Sarah / Bapak Rudi"
-                  className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-pink-500 focus:outline-none"
+                  className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-orange-400 focus:outline-none"
                 />
               </div>
 
@@ -386,7 +386,7 @@ export default function KelolaReviewPage() {
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
                   placeholder="Contoh: Orang Tua Siswa Kelas 2 SD"
-                  className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-pink-500 focus:outline-none"
+                  className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-orange-400 focus:outline-none"
                 />
               </div>
 
@@ -400,7 +400,7 @@ export default function KelolaReviewPage() {
                   value={program}
                   onChange={(e) => setProgram(e.target.value)}
                   placeholder="Contoh: Calistung / Bimbel SD"
-                  className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-pink-500 focus:outline-none"
+                  className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-orange-400 focus:outline-none"
                 />
               </div>
             </div>
@@ -439,7 +439,7 @@ export default function KelolaReviewPage() {
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
                   placeholder="Tuliskan cerita ulasan atau pengalaman ananda selama belajar di Bimbel Kiddos Zone..."
-                  className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-pink-500 focus:outline-none"
+                  className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-orange-400 focus:outline-none"
                 />
               </div>
             </div>
@@ -448,7 +448,7 @@ export default function KelolaReviewPage() {
               <button
                 type="submit"
                 disabled={submitting || compressing}
-                className="bg-pink-600 hover:bg-pink-700 text-white font-bold text-sm px-6 py-2.5 rounded-xl shadow transition flex items-center gap-2 disabled:opacity-50"
+                className="bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm px-6 py-2.5 rounded-xl shadow transition flex items-center gap-2 disabled:opacity-50"
               >
                 {submitting ? (
                   <>
@@ -495,7 +495,7 @@ export default function KelolaReviewPage() {
 
           {loading ? (
             <div className="py-12 text-center text-gray-500">
-              <div className="w-8 h-8 border-4 border-pink-500 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
+              <div className="w-8 h-8 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
               Memuat data review...
             </div>
           ) : testimonials.length === 0 ? (
@@ -529,10 +529,10 @@ export default function KelolaReviewPage() {
                             <img
                               src={item.avatar}
                               alt={item.name}
-                              className="w-10 h-10 rounded-full object-cover border border-pink-200 shrink-0"
+                              className="w-10 h-10 rounded-full object-cover border border-amber-200 shrink-0"
                             />
                           ) : (
-                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-400 to-rose-400 flex items-center justify-center text-white font-bold text-xs shrink-0 baloo">
+                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-400 flex items-center justify-center text-white font-bold text-xs shrink-0 baloo">
                               {item.name
                                 .split(" ")
                                 .map((n) => n[0])
@@ -542,9 +542,9 @@ export default function KelolaReviewPage() {
                           )}
                           <div>
                             <p className="font-bold text-gray-800">{item.name}</p>
-                            <p className="text-xs text-pink-600 font-medium">{item.role}</p>
+                            <p className="text-xs text-orange-600 font-medium">{item.role}</p>
                             {item.program && (
-                              <span className="inline-block mt-0.5 text-[10px] bg-pink-50 text-pink-700 font-semibold px-2 py-0.2 rounded-full">
+                              <span className="inline-block mt-0.5 text-[10px] bg-amber-50 text-orange-800 font-semibold px-2 py-0.2 rounded-full border border-amber-200/60">
                                 {item.program}
                               </span>
                             )}

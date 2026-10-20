@@ -165,7 +165,7 @@ export default function KelolaGuruPage() {
             </Link>
             <div>
               <h1 className="text-lg sm:text-xl font-extrabold text-gray-800 baloo leading-none flex items-center gap-2">
-                <FaChalkboardTeacher className="text-emerald-600" /> Kelola Guru &amp; Tutor
+                <FaChalkboardTeacher className="text-orange-500" /> Kelola Guru &amp; Tutor
               </h1>
               <p className="text-xs text-gray-500 mt-0.5">
                 Admin: <span className="font-semibold text-gray-700">{user?.email}</span>
@@ -177,7 +177,7 @@ export default function KelolaGuruPage() {
             <Link
               href="/tentang-kami#informasi-pengajar"
               target="_blank"
-              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100 px-3 py-1.5 rounded-lg border border-teal-200 transition"
+              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-orange-800 bg-amber-100/70 hover:bg-amber-200/80 px-3 py-1.5 rounded-lg border border-amber-300 transition"
             >
               <FaExternalLinkAlt className="text-xs" /> Lihat di Web
             </Link>
@@ -215,11 +215,11 @@ export default function KelolaGuruPage() {
             <h2 className="text-xl font-bold text-gray-800 baloo flex items-center gap-2">
               {editingId ? (
                 <>
-                  <FaEdit className="text-emerald-600" /> Edit Data Guru
+                  <FaEdit className="text-orange-500" /> Edit Data Guru
                 </>
               ) : (
                 <>
-                  <FaPlus className="text-emerald-600" /> Form Input Guru / Tutor Baru
+                  <FaPlus className="text-orange-500" /> Form Input Guru / Tutor Baru
                 </>
               )}
             </h2>
@@ -235,7 +235,7 @@ export default function KelolaGuruPage() {
             <div className="bg-gray-50 border border-gray-200 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <div className="relative shrink-0">
                 {img ? (
-                  <div className="w-24 h-24 rounded-2xl overflow-hidden border-2 border-emerald-400 shadow-sm relative group">
+                  <div className="w-24 h-24 rounded-2xl overflow-hidden border-2 border-orange-300 shadow-sm relative group">
                     <img
                       src={img}
                       alt="Preview Foto Guru"
@@ -251,7 +251,7 @@ export default function KelolaGuruPage() {
                     </button>
                   </div>
                 ) : (
-                  <div className="w-24 h-24 rounded-2xl bg-emerald-100 border-2 border-dashed border-emerald-300 flex flex-col items-center justify-center text-emerald-600">
+                  <div className="w-24 h-24 rounded-2xl bg-amber-100 border-2 border-dashed border-amber-300 flex flex-col items-center justify-center text-orange-600">
                     <FaChalkboardTeacher className="text-3xl" />
                     <span className="text-[10px] font-bold mt-1">Belum Ada Foto</span>
                   </div>
@@ -268,7 +268,7 @@ export default function KelolaGuruPage() {
 
                 <div className="mt-3 flex flex-wrap items-center gap-2">
                   <label className="inline-flex items-center gap-2 bg-white hover:bg-gray-100 text-gray-700 text-xs font-bold px-3.5 py-2 rounded-xl border border-gray-300 shadow-sm cursor-pointer transition">
-                    <FaCamera className="text-emerald-600 text-sm" />
+                    <FaCamera className="text-orange-500 text-sm" />
                     <span>{img ? "Ganti Foto" : "Unggah Foto Guru"}</span>
                     <input
                       type="file"
@@ -290,8 +290,8 @@ export default function KelolaGuruPage() {
                   )}
 
                   {compressing && (
-                    <span className="text-xs text-emerald-600 font-medium flex items-center gap-1.5">
-                      <div className="w-3.5 h-3.5 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+                    <span className="text-xs text-orange-600 font-medium flex items-center gap-1.5">
+                      <div className="w-3.5 h-3.5 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
                       Sedang mengompres foto...
                     </span>
                   )}
@@ -311,7 +311,7 @@ export default function KelolaGuruPage() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Contoh: Ibu Frida / Ms Deti"
-                  className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                  className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-orange-400 focus:outline-none"
                 />
               </div>
 
@@ -326,7 +326,7 @@ export default function KelolaGuruPage() {
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
                   placeholder="Contoh: Guru PraCalis & Calistung"
-                  className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                  className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-orange-400 focus:outline-none"
                 />
               </div>
             </div>
@@ -335,7 +335,7 @@ export default function KelolaGuruPage() {
               <button
                 type="submit"
                 disabled={submitting || compressing}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm px-6 py-2.5 rounded-xl shadow transition flex items-center gap-2 disabled:opacity-50"
+                className="bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm px-6 py-2.5 rounded-xl shadow transition flex items-center gap-2 disabled:opacity-50"
               >
                 {submitting ? (
                   <>
@@ -382,7 +382,7 @@ export default function KelolaGuruPage() {
 
           {loading ? (
             <div className="py-12 text-center text-gray-500">
-              <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
+              <div className="w-8 h-8 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
               Memuat data guru...
             </div>
           ) : teachers.length === 0 ? (
@@ -415,10 +415,10 @@ export default function KelolaGuruPage() {
                           <img
                             src={item.img}
                             alt={item.name}
-                            className="w-12 h-12 rounded-xl object-cover border border-emerald-200 shadow-sm shrink-0"
+                            className="w-12 h-12 rounded-xl object-cover border border-amber-200 shadow-sm shrink-0"
                           />
                         ) : (
-                          <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 font-bold text-sm flex items-center justify-center shrink-0">
+                          <div className="w-12 h-12 rounded-xl bg-amber-100 text-orange-700 font-bold text-sm flex items-center justify-center shrink-0">
                             {item.name
                               .split(" ")
                               .map((n) => n[0])
@@ -431,7 +431,7 @@ export default function KelolaGuruPage() {
                         {item.name}
                       </td>
                       <td className="px-4 py-4 align-middle">
-                        <span className="inline-block text-xs bg-emerald-50 text-emerald-700 font-semibold px-2.5 py-1 rounded-full">
+                        <span className="inline-block text-xs bg-amber-50 text-orange-800 font-semibold px-2.5 py-1 rounded-full border border-amber-200/60">
                           {item.subject}
                         </span>
                       </td>

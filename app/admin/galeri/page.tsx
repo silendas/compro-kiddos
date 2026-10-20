@@ -136,7 +136,7 @@ export default function KelolaGaleriPage() {
             </Link>
             <div>
               <h1 className="text-lg sm:text-xl font-extrabold text-gray-800 baloo leading-none flex items-center gap-2">
-                <FaImages className="text-lime-600" /> Kelola Galeri Kegiatan
+                <FaImages className="text-orange-500" /> Kelola Galeri Kegiatan
               </h1>
               <p className="text-xs text-gray-500 mt-0.5">
                 Admin: <span className="font-semibold text-gray-700">{user?.email}</span>
@@ -148,7 +148,7 @@ export default function KelolaGaleriPage() {
             <Link
               href="/galeri"
               target="_blank"
-              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100 px-3 py-1.5 rounded-lg border border-teal-200 transition"
+              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-orange-800 bg-amber-100/70 hover:bg-amber-200/80 px-3 py-1.5 rounded-lg border border-amber-300 transition"
             >
               <FaExternalLinkAlt className="text-xs" /> Lihat di Web
             </Link>
@@ -184,13 +184,13 @@ export default function KelolaGaleriPage() {
         <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-gray-100">
           <div className="flex items-center justify-between mb-4 pb-3 border-b border-gray-100">
             <h2 className="text-xl font-bold text-gray-800 baloo flex items-center gap-2">
-              <FaPlus className="text-lime-600" /> Unggah Foto Kegiatan Baru
+              <FaPlus className="text-orange-500" /> Unggah Foto Kegiatan Baru
             </h2>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Upload Area */}
-            <div className="bg-lime-50/50 border-2 border-dashed border-lime-300 rounded-2xl p-6 text-center">
+            <div className="bg-amber-50/50 border-2 border-dashed border-amber-300 rounded-2xl p-6 text-center">
               {img ? (
                 <div className="relative inline-block max-w-sm w-full mx-auto">
                   <div className="relative aspect-[3/2] rounded-xl overflow-hidden shadow-md border border-gray-200">
@@ -211,7 +211,7 @@ export default function KelolaGaleriPage() {
                 </div>
               ) : (
                 <div className="py-4">
-                  <FaCamera className="text-4xl text-lime-600 mx-auto mb-2" />
+                  <FaCamera className="text-4xl text-orange-500 mx-auto mb-2" />
                   <p className="text-sm font-bold text-gray-800">
                     Pilih Foto Kegiatan Belajar / Acara Bimbel
                   </p>
@@ -219,7 +219,7 @@ export default function KelolaGaleriPage() {
                     Foto dari kamera atau galeri akan <strong>otomatis dikompres</strong> menjadi ukuran ringan dan cepat dimuat.
                   </p>
 
-                  <label className="mt-4 inline-flex items-center gap-2 bg-lime-600 hover:bg-lime-700 text-white text-xs font-bold px-5 py-2.5 rounded-xl shadow cursor-pointer transition">
+                  <label className="mt-4 inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold px-5 py-2.5 rounded-xl shadow cursor-pointer transition">
                     <FaCamera />
                     <span>Pilih Foto dari Perangkat</span>
                     <input
@@ -234,8 +234,8 @@ export default function KelolaGaleriPage() {
               )}
 
               {compressing && (
-                <p className="text-xs text-lime-700 font-semibold mt-3 flex items-center justify-center gap-1.5">
-                  <span className="w-3.5 h-3.5 border-2 border-lime-600 border-t-transparent rounded-full animate-spin" />
+                <p className="text-xs text-orange-700 font-semibold mt-3 flex items-center justify-center gap-1.5">
+                  <span className="w-3.5 h-3.5 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
                   Sedang mengompres foto...
                 </p>
               )}
@@ -252,14 +252,14 @@ export default function KelolaGaleriPage() {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Contoh: Belajar Calistung Ceria Kelas Pagi"
-                className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-lime-500 focus:outline-none"
+                className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-orange-400 focus:outline-none"
               />
             </div>
 
             <button
               type="submit"
               disabled={submitting || compressing || !img}
-              className="bg-lime-600 hover:bg-lime-700 text-white font-bold text-sm px-6 py-2.5 rounded-xl shadow transition flex items-center gap-2 disabled:opacity-50"
+              className="bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm px-6 py-2.5 rounded-xl shadow transition flex items-center gap-2 disabled:opacity-50"
             >
               {submitting ? (
                 <>
@@ -291,7 +291,7 @@ export default function KelolaGaleriPage() {
 
           {loading ? (
             <div className="py-12 text-center text-gray-500">
-              <div className="w-8 h-8 border-4 border-lime-500 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
+              <div className="w-8 h-8 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
               Memuat foto galeri...
             </div>
           ) : gallery.length === 0 ? (

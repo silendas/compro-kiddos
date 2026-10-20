@@ -107,7 +107,7 @@ export default function KelolaArtikelAdminPage() {
             </Link>
             <div>
               <h1 className="text-lg sm:text-xl font-extrabold text-gray-800 baloo leading-none flex items-center gap-2">
-                <FaNewspaper className="text-teal-600" /> Kelola Artikel &amp; Berita
+                <FaNewspaper className="text-orange-500" /> Kelola Artikel &amp; Berita
               </h1>
               <p className="text-xs text-gray-500 mt-0.5">
                 Admin: <span className="font-semibold text-gray-700">{user?.email}</span>
@@ -119,7 +119,7 @@ export default function KelolaArtikelAdminPage() {
             <Link
               href="/artikel"
               target="_blank"
-              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100 px-3 py-1.5 rounded-lg border border-teal-200 transition"
+              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-orange-800 bg-amber-100/70 hover:bg-amber-200/80 px-3 py-1.5 rounded-lg border border-amber-300 transition"
             >
               <FaExternalLinkAlt className="text-xs" /> Lihat Semua Artikel
             </Link>
@@ -155,7 +155,7 @@ export default function KelolaArtikelAdminPage() {
         <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-gray-100">
           <div className="flex items-center justify-between mb-4 pb-3 border-b border-gray-100">
             <h2 className="text-xl font-bold text-gray-800 baloo flex items-center gap-2">
-              <FaPlus className="text-teal-600" /> Tulis Artikel Baru
+              <FaPlus className="text-orange-500" /> Tulis Artikel Baru
             </h2>
           </div>
 
@@ -171,12 +171,12 @@ export default function KelolaArtikelAdminPage() {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Contoh: 5 Cara Efektif Mendampingi Anak Belajar Calistung di Rumah"
-                className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none"
+                className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-orange-400 focus:outline-none"
               />
               {title.trim() && (
                 <p className="mt-1.5 text-xs text-gray-500 font-mono">
                   🔗 <span className="font-semibold text-gray-700">URL SEO:</span> /artikel/
-                  <span className="text-teal-600 font-bold">{createSlug(title)}</span>
+                  <span className="text-orange-600 font-bold">{createSlug(title)}</span>
                 </p>
               )}
             </div>
@@ -192,7 +192,7 @@ export default function KelolaArtikelAdminPage() {
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 placeholder="Tuliskan materi panduan edukasi, tips belajar, atau pengumuman..."
-                className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none"
+                className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-orange-400 focus:outline-none"
               />
             </div>
 
@@ -200,7 +200,7 @@ export default function KelolaArtikelAdminPage() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="bg-teal-600 hover:bg-teal-700 text-white font-bold text-sm px-6 py-2.5 rounded-xl shadow transition flex items-center gap-2 disabled:opacity-50"
+                className="bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm px-6 py-2.5 rounded-xl shadow transition flex items-center gap-2 disabled:opacity-50 baloo"
               >
                 {submitting ? (
                   <>
@@ -233,7 +233,7 @@ export default function KelolaArtikelAdminPage() {
 
           {loading ? (
             <div className="py-12 text-center text-gray-500">
-              <div className="w-8 h-8 border-4 border-teal-500 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
+              <div className="w-8 h-8 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
               Memuat data artikel...
             </div>
           ) : articles.length === 0 ? (
@@ -274,7 +274,7 @@ export default function KelolaArtikelAdminPage() {
                           <Link
                             href={`/artikel/${item.slug || item.id}`}
                             target="_blank"
-                            className="hover:text-teal-600 transition"
+                            className="hover:text-orange-600 transition"
                           >
                             {item.title}
                           </Link>
@@ -295,7 +295,7 @@ export default function KelolaArtikelAdminPage() {
                             <Link
                               href={`/artikel/${item.slug || item.id}`}
                               target="_blank"
-                              className="inline-flex items-center gap-1 text-xs font-bold text-teal-700 hover:text-teal-900 bg-teal-50 hover:bg-teal-100 px-2.5 py-1.5 rounded-lg transition"
+                              className="inline-flex items-center gap-1 text-xs font-bold text-orange-700 hover:text-orange-900 bg-amber-50 hover:bg-amber-100 px-2.5 py-1.5 rounded-lg transition"
                             >
                               <FaExternalLinkAlt className="text-[10px]" /> Lihat
                             </Link>

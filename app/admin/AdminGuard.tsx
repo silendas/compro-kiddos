@@ -26,7 +26,7 @@ export default function AdminGuard({ children }: { children: React.ReactNode }) 
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
-        <div className="w-12 h-12 border-4 border-teal-500 border-t-transparent rounded-full animate-spin mb-4" />
+        <div className="w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mb-4" />
         <p className="text-gray-600 font-medium text-sm">Memeriksa izin akses admin...</p>
       </div>
     );

@@ -182,7 +182,7 @@ export default function KelolaProgramPage() {
             </Link>
             <div>
               <h1 className="text-lg sm:text-xl font-extrabold text-gray-800 baloo leading-none flex items-center gap-2">
-                <FaBookOpen className="text-purple-600" /> Kelola Program Belajar
+                <FaBookOpen className="text-orange-500" /> Kelola Program Belajar
               </h1>
               <p className="text-xs text-gray-500 mt-0.5">
                 Admin: <span className="font-semibold text-gray-700">{user?.email}</span>
@@ -194,7 +194,7 @@ export default function KelolaProgramPage() {
             <Link
               href="/program-les"
               target="_blank"
-              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100 px-3 py-1.5 rounded-lg border border-teal-200 transition"
+              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-orange-800 bg-amber-100/70 hover:bg-amber-200/80 px-3 py-1.5 rounded-lg border border-amber-300 transition"
             >
               <FaExternalLinkAlt className="text-xs" /> Lihat di Web
             </Link>
@@ -227,19 +227,19 @@ export default function KelolaProgramPage() {
       {/* Konten Utama */}
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 space-y-8">
         {/* Tombol Muat Default */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-purple-50 border border-purple-200 rounded-2xl p-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-amber-50/80 border border-amber-200 rounded-2xl p-4">
           <div>
-            <h2 className="text-sm sm:text-base font-bold text-purple-900">
+            <h2 className="text-sm sm:text-base font-bold text-orange-950 baloo">
               Sinkronisasi Program Belajar
             </h2>
-            <p className="text-xs text-purple-700 mt-0.5">
+            <p className="text-xs text-orange-800/80 mt-0.5">
               Program belajar yang disimpan akan langsung tampil pada halaman program les dan kartu unggulan beranda.
             </p>
           </div>
           <button
             type="button"
             onClick={handleSeedDefaults}
-            className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-white bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-xl shadow-sm transition shrink-0"
+            className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-white bg-orange-500 hover:bg-orange-600 px-4 py-2 rounded-xl shadow-sm transition shrink-0 baloo"
           >
             <FaCloudDownloadAlt className="text-base" /> Muat Program Bawaan
           </button>
@@ -251,11 +251,11 @@ export default function KelolaProgramPage() {
             <h2 className="text-xl font-bold text-gray-800 baloo flex items-center gap-2">
               {editingId ? (
                 <>
-                  <FaEdit className="text-purple-600" /> Edit Program Belajar
+                  <FaEdit className="text-orange-500" /> Edit Program Belajar
                 </>
               ) : (
                 <>
-                  <FaPlus className="text-purple-600" /> Form Tambah Program Baru
+                  <FaPlus className="text-orange-500" /> Form Tambah Program Baru
                 </>
               )}
             </h2>
@@ -271,7 +271,7 @@ export default function KelolaProgramPage() {
             <div className="bg-gray-50 border border-gray-200 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <div className="relative shrink-0">
                 {img ? (
-                  <div className="w-24 h-24 rounded-2xl overflow-hidden border-2 border-purple-400 shadow-sm relative group">
+                  <div className="w-24 h-24 rounded-2xl overflow-hidden border-2 border-amber-400 shadow-sm relative group">
                     <img
                       src={img}
                       alt="Preview Cover"
@@ -287,7 +287,7 @@ export default function KelolaProgramPage() {
                     </button>
                   </div>
                 ) : (
-                  <div className="w-24 h-24 rounded-2xl bg-purple-100 border-2 border-dashed border-purple-300 flex flex-col items-center justify-center text-purple-600">
+                  <div className="w-24 h-24 rounded-2xl bg-amber-100 border-2 border-dashed border-amber-300 flex flex-col items-center justify-center text-orange-600">
                     <FaBookOpen className="text-3xl" />
                     <span className="text-[10px] font-bold mt-1">Cover/Ikon</span>
                   </div>
@@ -304,7 +304,7 @@ export default function KelolaProgramPage() {
 
                 <div className="mt-3 flex flex-wrap items-center gap-2">
                   <label className="inline-flex items-center gap-2 bg-white hover:bg-gray-100 text-gray-700 text-xs font-bold px-3.5 py-2 rounded-xl border border-gray-300 shadow-sm cursor-pointer transition">
-                    <FaCamera className="text-purple-600 text-sm" />
+                    <FaCamera className="text-orange-500 text-sm" />
                     <span>{img ? "Ganti Gambar" : "Unggah Cover Program"}</span>
                     <input
                       type="file"
@@ -326,8 +326,8 @@ export default function KelolaProgramPage() {
                   )}
 
                   {compressing && (
-                    <span className="text-xs text-purple-600 font-medium flex items-center gap-1.5">
-                      <div className="w-3.5 h-3.5 border-2 border-purple-500 border-t-transparent rounded-full animate-spin" />
+                    <span className="text-xs text-orange-600 font-medium flex items-center gap-1.5">
+                      <div className="w-3.5 h-3.5 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
                       Sedang mengompres gambar...
                     </span>
                   )}
@@ -346,7 +346,7 @@ export default function KelolaProgramPage() {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Contoh: PraCalis / Calistung / Mapel SD / Science Club"
-                className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-orange-400 focus:outline-none"
               />
             </div>
 
@@ -361,7 +361,7 @@ export default function KelolaProgramPage() {
                 value={desc}
                 onChange={(e) => setDesc(e.target.value)}
                 placeholder="Jelaskan rentang usia anak, metode pembelajaran, materi yang diajarkan, serta manfaat bagi siswa..."
-                className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-orange-400 focus:outline-none"
               />
             </div>
 
@@ -371,7 +371,7 @@ export default function KelolaProgramPage() {
                 type="checkbox"
                 checked={featured}
                 onChange={(e) => setFeatured(e.target.checked)}
-                className="w-4 h-4 text-purple-600 rounded border-gray-300 focus:ring-purple-500"
+                className="w-4 h-4 text-orange-500 rounded border-gray-300 focus:ring-orange-400"
               />
               <label htmlFor="featured" className="text-xs font-bold text-gray-700 cursor-pointer flex items-center gap-1">
                 <FaStar className="text-amber-400" /> Tampilkan sebagai Program Unggulan di Halaman Beranda
@@ -382,7 +382,7 @@ export default function KelolaProgramPage() {
               <button
                 type="submit"
                 disabled={submitting || compressing}
-                className="bg-purple-600 hover:bg-purple-700 text-white font-bold text-sm px-6 py-2.5 rounded-xl shadow transition flex items-center gap-2 disabled:opacity-50"
+                className="bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm px-6 py-2.5 rounded-xl shadow transition flex items-center gap-2 disabled:opacity-50 baloo"
               >
                 {submitting ? (
                   <>
@@ -429,7 +429,7 @@ export default function KelolaProgramPage() {
 
           {loading ? (
             <div className="py-12 text-center text-gray-500">
-              <div className="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
+              <div className="w-8 h-8 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
               Memuat data program...
             </div>
           ) : programs.length === 0 ? (
@@ -444,7 +444,7 @@ export default function KelolaProgramPage() {
               {programs.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-gray-50 border border-gray-200 rounded-2xl p-4 sm:p-5 flex flex-col justify-between hover:border-purple-300 transition"
+                  className="bg-gray-50 border border-gray-200 rounded-2xl p-4 sm:p-5 flex flex-col justify-between hover:border-orange-400 transition"
                 >
                   <div>
                     <div className="flex items-start justify-between gap-3 mb-2">

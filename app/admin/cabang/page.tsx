@@ -195,7 +195,7 @@ export default function KelolaCabangPage() {
             </Link>
             <div>
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-blue-500" />
+                <span className="w-2.5 h-2.5 rounded-full bg-orange-500" />
                 <h1 className="text-xl font-extrabold text-gray-800 baloo leading-none">
                   Kelola Lokasi Cabang
                 </h1>
@@ -210,7 +210,7 @@ export default function KelolaCabangPage() {
             <Link
               href="/#lokasi"
               target="_blank"
-              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg border border-blue-200 transition"
+              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-orange-800 bg-amber-100/70 hover:bg-amber-200/80 px-3 py-1.5 rounded-lg border border-amber-300 transition"
             >
               <FaExternalLinkAlt className="text-xs" /> Lihat di Web
             </Link>
@@ -227,15 +227,15 @@ export default function KelolaCabangPage() {
       {/* Main Container */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 space-y-8">
         {/* Header Description */}
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-3xl p-6 md:p-8 text-white shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div className="bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 rounded-3xl p-6 md:p-8 text-white shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div className="max-w-2xl">
             <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full mb-3">
-              <FaMapMarkerAlt className="text-amber-300" /> Lokasi Cabang &amp; Titik Belajar
+              <FaMapMarkerAlt className="text-amber-200" /> Lokasi Cabang &amp; Titik Belajar
             </span>
             <h2 className="text-2xl md:text-3xl font-extrabold baloo leading-tight">
               Daftar Cabang Bimbel Kiddos Zone
             </h2>
-            <p className="mt-2 text-sm text-blue-100 leading-relaxed font-sans">
+            <p className="mt-2 text-sm text-amber-50 leading-relaxed font-sans">
               Kelola alamat dan nama cabang bimbel yang tampil di beranda utama untuk mempermudah calon wali murid menemukan lokasi bimbel terdekat.
             </p>
           </div>
@@ -244,7 +244,7 @@ export default function KelolaCabangPage() {
             <button
               onClick={handleSeed}
               disabled={seeding}
-              className="bg-white hover:bg-amber-50 text-blue-700 font-bold px-4 py-2.5 rounded-xl text-sm shadow transition flex items-center gap-2 shrink-0 disabled:opacity-50"
+              className="bg-white hover:bg-amber-50 text-orange-800 font-bold px-4 py-2.5 rounded-xl text-sm shadow transition flex items-center gap-2 shrink-0 disabled:opacity-50"
             >
               <FaBuilding />
               <span>{seeding ? "Memuat..." : "Muat Contoh Cabang Awal"}</span>
@@ -258,7 +258,7 @@ export default function KelolaCabangPage() {
           <div className="lg:col-span-5 bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
             <div className="flex items-center justify-between pb-4 border-b border-gray-100 mb-5">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center text-sm font-bold">
+                <div className="w-8 h-8 rounded-lg bg-amber-100 text-orange-600 flex items-center justify-center text-sm font-bold">
                   {editingId ? <FaEdit /> : <FaPlus />}
                 </div>
                 <h3 className="text-lg font-bold text-gray-800 baloo">
@@ -291,7 +291,7 @@ export default function KelolaCabangPage() {
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder="Contoh: Bimbel KIDDOS Zone Kenari (Pusat)"
-                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-semibold text-gray-800"
+                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm font-semibold text-gray-800"
                     required
                   />
                 </div>
@@ -308,7 +308,7 @@ export default function KelolaCabangPage() {
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                     placeholder="Contoh: Perumahan Taman Kenari, Blok D6 No 3, Cimahpar, Kec. Bogor Utara, Kota Bogor"
-                    className="w-full px-3 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm text-gray-800 leading-relaxed"
+                    className="w-full px-3 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm text-gray-800 leading-relaxed"
                     required
                   />
                 </div>
@@ -330,7 +330,7 @@ export default function KelolaCabangPage() {
                       min={1}
                       value={order}
                       onChange={(e) => setOrder(parseInt(e.target.value) || 1)}
-                      className="w-full pl-9 pr-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-semibold text-gray-800"
+                      className="w-full pl-9 pr-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm font-semibold text-gray-800"
                     />
                   </div>
                 </div>
@@ -349,7 +349,7 @@ export default function KelolaCabangPage() {
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder="0851-xxxx-xxxx"
-                      className="w-full pl-9 pr-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm text-gray-800"
+                      className="w-full pl-9 pr-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm text-gray-800"
                     />
                   </div>
                 </div>
@@ -369,7 +369,7 @@ export default function KelolaCabangPage() {
                     value={mapsUrl}
                     onChange={(e) => setMapsUrl(e.target.value)}
                     placeholder="https://maps.google.com/..."
-                    className="w-full pl-9 pr-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm text-gray-800"
+                    className="w-full pl-9 pr-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm text-gray-800"
                   />
                 </div>
               </div>
@@ -381,7 +381,7 @@ export default function KelolaCabangPage() {
                     type="checkbox"
                     checked={isHeadquarters}
                     onChange={(e) => setIsHeadquarters(e.target.checked)}
-                    className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+                    className="w-4 h-4 text-orange-500 rounded focus:ring-orange-400"
                   />
                   <div className="text-xs">
                     <span className="font-bold text-gray-800 flex items-center gap-1">
@@ -399,7 +399,7 @@ export default function KelolaCabangPage() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-4 rounded-xl shadow transition flex items-center justify-center gap-2 disabled:opacity-50"
+                  className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2.5 px-4 rounded-xl shadow transition flex items-center justify-center gap-2 disabled:opacity-50"
                 >
                   <FaCheck />
                   <span>
@@ -430,7 +430,7 @@ export default function KelolaCabangPage() {
                 <button
                   onClick={handleSeed}
                   disabled={seeding}
-                  className="text-xs font-semibold text-blue-600 hover:text-blue-800 bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-200 transition"
+                  className="text-xs font-semibold text-orange-700 hover:text-orange-900 bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200 transition"
                   title="Tambah ulang cabang standar jika diperlukan"
                 >
                   + Tambah Contoh
@@ -440,12 +440,12 @@ export default function KelolaCabangPage() {
 
             {loading ? (
               <div className="bg-white border border-gray-200 rounded-3xl p-12 text-center text-gray-400">
-                <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+                <div className="w-8 h-8 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
                 <p className="text-sm">Memuat data cabang...</p>
               </div>
             ) : branches.length === 0 ? (
               <div className="bg-white border border-dashed border-gray-300 rounded-3xl p-10 text-center">
-                <div className="w-16 h-16 bg-blue-50 text-blue-500 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-3">
+                <div className="w-16 h-16 bg-amber-50 text-orange-500 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-3">
                   <FaMapMarkerAlt />
                 </div>
                 <h4 className="text-lg font-bold text-gray-800 baloo">
@@ -457,7 +457,7 @@ export default function KelolaCabangPage() {
                 <button
                   onClick={handleSeed}
                   disabled={seeding}
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-xl text-sm transition inline-flex items-center gap-2"
+                  className="bg-orange-500 hover:bg-orange-600 text-white font-bold px-4 py-2 rounded-xl text-sm transition inline-flex items-center gap-2"
                 >
                   <FaBuilding />
                   <span>{seeding ? "Memuat..." : "Muat Contoh Cabang Awal"}</span>
@@ -468,7 +468,7 @@ export default function KelolaCabangPage() {
                 {branches.map((item, index) => (
                   <div
                     key={item.id || index}
-                    className="bg-white border border-gray-200 hover:border-blue-300 rounded-2xl p-5 shadow-sm transition flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+                    className="bg-white border border-gray-200 hover:border-orange-300 rounded-2xl p-5 shadow-sm transition flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
                   >
                     <div className="space-y-1.5 flex-1">
                       <div className="flex flex-wrap items-center gap-2">
@@ -500,7 +500,7 @@ export default function KelolaCabangPage() {
                             href={item.mapsUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 text-blue-600 hover:underline"
+                            className="inline-flex items-center gap-1 text-orange-600 hover:text-orange-800 hover:underline"
                           >
                             <FaMapMarkerAlt className="text-red-500 text-[10px]" /> Buka Maps <FaExternalLinkAlt className="text-[9px]" />
                           </a>
@@ -511,7 +511,7 @@ export default function KelolaCabangPage() {
                     <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
                       <button
                         onClick={() => handleEdit(item)}
-                        className="p-2 rounded-xl text-blue-600 bg-blue-50 hover:bg-blue-100 transition"
+                        className="p-2 rounded-xl text-orange-700 bg-amber-50 hover:bg-amber-100 transition"
                         title="Edit Cabang"
                       >
                         <FaEdit />

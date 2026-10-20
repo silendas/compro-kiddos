@@ -64,7 +64,7 @@ export default function FlyingButton() {
       )}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="bg-green-600 text-white p-3 rounded-full shadow-lg hover:bg-green-700 transition duration-300 flex items-center justify-center cursor-pointer"
+        className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white p-3.5 rounded-full shadow-xl hover:shadow-orange-500/40 ring-4 ring-amber-200/60 transition duration-300 flex items-center justify-center cursor-pointer"
         aria-label={
           isOpen ? "Tutup tombol sosial media" : "Buka tombol kontak sosial media"
         }
