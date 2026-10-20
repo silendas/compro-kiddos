@@ -38,6 +38,63 @@ export function createSlug(text: string): string {
 }
 
 /**
+ * Mengubah Firestore Timestamp atau tanggal menjadi plain JavaScript object
+ * tanpa prototype method / toJSON method agar serializable untuk Next.js Server & Client Components
+ */
+export function toPlainCreatedAt(raw: unknown): { seconds: number; nanoseconds: number } {
+  if (!raw || typeof raw !== "object") {
+    return { seconds: Math.floor(Date.now() / 1000), nanoseconds: 0 };
+  }
+
+  const candidate = raw as {
+    seconds?: unknown;
+    nanoseconds?: unknown;
+    toDate?: unknown;
+  };
+
+  if (typeof candidate.seconds === "number") {
+    return {
+      seconds: Math.floor(candidate.seconds),
+      nanoseconds: typeof candidate.nanoseconds === "number" ? Math.floor(candidate.nanoseconds) : 0,
+    };
+  }
+
+  if (typeof candidate.toDate === "function") {
+    try {
+      const date = (candidate.toDate as () => Date)();
+      return {
+        seconds: Math.floor(date.getTime() / 1000),
+        nanoseconds: 0,
+      };
+    } catch {
+      // fallback
+    }
+  }
+
+  return { seconds: Math.floor(Date.now() / 1000), nanoseconds: 0 };
+}
+
+/**
+ * Menghasilkan objek Article yang 100% plain object (aman dilempar dari Server Component ke Client Component)
+ */
+export function sanitizeArticle(docId: string, data: Record<string, unknown>): Article {
+  const title = typeof data.title === "string" ? data.title : "";
+  const slug =
+    typeof data.slug === "string" && data.slug.trim()
+      ? data.slug.trim()
+      : createSlug(title);
+  const content = typeof data.content === "string" ? data.content : "";
+
+  return {
+    id: String(docId),
+    slug,
+    title,
+    content,
+    createdAt: toPlainCreatedAt(data.createdAt),
+  };
+}
+
+/**
  * Mengambil daftar artikel dari Firestore
  */
 export async function getArticles(limitCount?: number): Promise<Article[]> {
@@ -51,15 +108,7 @@ export async function getArticles(limitCount?: number): Promise<Article[]> {
     const articles: Article[] = [];
 
     querySnapshot.forEach((docSnap) => {
-      const data = docSnap.data();
-      const generatedSlug = data.slug || createSlug(data.title || "");
-      articles.push({
-        id: docSnap.id,
-        slug: generatedSlug,
-        title: data.title || "",
-        content: data.content || "",
-        createdAt: data.createdAt || { seconds: Date.now() / 1000, nanoseconds: 0 },
-      });
+      articles.push(sanitizeArticle(docSnap.id, docSnap.data() as Record<string, unknown>));
     });
 
     return articles;
@@ -75,46 +124,54 @@ export async function getArticles(limitCount?: number): Promise<Article[]> {
 export async function getArticleById(idOrSlug: string): Promise<Article | null> {
   if (!idOrSlug) return null;
 
+  const target = decodeURIComponent(idOrSlug).trim();
+
   try {
     // 1. Coba cari langsung berdasarkan Document ID Firestore
-    const docRef = doc(db, "artikel", idOrSlug);
+    const docRef = doc(db, "artikel", target);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      const data = docSnap.data();
-      return {
-        id: docSnap.id,
-        slug: data.slug || createSlug(data.title || ""),
-        title: data.title || "",
-        content: data.content || "",
-        createdAt: data.createdAt || { seconds: Date.now() / 1000, nanoseconds: 0 },
-      };
+      return sanitizeArticle(docSnap.id, docSnap.data() as Record<string, unknown>);
     }
 
     // 2. Jika tidak ditemukan via Doc ID, cari berdasarkan field 'slug'
     const slugQuery = query(
       collection(db, "artikel"),
-      where("slug", "==", idOrSlug),
+      where("slug", "==", target),
       limit(1)
     );
     const slugSnapshot = await getDocs(slugQuery);
 
     if (!slugSnapshot.empty) {
       const foundDoc = slugSnapshot.docs[0];
-      const data = foundDoc.data();
-      return {
-        id: foundDoc.id,
-        slug: data.slug || idOrSlug,
-        title: data.title || "",
-        content: data.content || "",
-        createdAt: data.createdAt || { seconds: Date.now() / 1000, nanoseconds: 0 },
-      };
+      return sanitizeArticle(foundDoc.id, foundDoc.data() as Record<string, unknown>);
+    }
+
+    // Coba juga slug dalam versi lowercase jika target ada huruf besar
+    const lowerTarget = target.toLowerCase();
+    if (lowerTarget !== target) {
+      const lowerQuery = query(
+        collection(db, "artikel"),
+        where("slug", "==", lowerTarget),
+        limit(1)
+      );
+      const lowerSnapshot = await getDocs(lowerQuery);
+      if (!lowerSnapshot.empty) {
+        const foundDoc = lowerSnapshot.docs[0];
+        return sanitizeArticle(foundDoc.id, foundDoc.data() as Record<string, unknown>);
+      }
     }
 
     // 3. Fallback: Ambil semua artikel untuk mencocokkan createSlug(title) jika slug belum tersimpan di Firestore
     const allArticles = await getArticles();
     const matched = allArticles.find(
-      (a) => a.slug === idOrSlug || a.id === idOrSlug || createSlug(a.title) === idOrSlug
+      (a) =>
+        a.slug === target ||
+        a.id === target ||
+        a.slug === lowerTarget ||
+        createSlug(a.title) === target ||
+        createSlug(a.title) === lowerTarget
     );
 
     return matched || null;

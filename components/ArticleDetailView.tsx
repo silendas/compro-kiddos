@@ -18,14 +18,24 @@ export default function ArticleDetailView({
   const [loading, setLoading] = useState(!initialArticle);
 
   useEffect(() => {
-    if (!id || initialArticle) return;
+    if (initialArticle) {
+      setArticle(initialArticle);
+      setLoading(false);
+      return;
+    }
+    if (!id) {
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
     getArticleById(id)
       .then((data) => {
         setArticle(data);
-        setLoading(false);
       })
       .catch((err) => {
         console.error("Gagal mengambil artikel:", err);
+      })
+      .finally(() => {
         setLoading(false);
       });
   }, [id, initialArticle]);

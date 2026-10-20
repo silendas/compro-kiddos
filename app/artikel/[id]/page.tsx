@@ -68,21 +68,37 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
+export const dynamicParams = false;
+
 export default async function ArticleDetailPage({ params }: PageProps) {
   const { id } = await params;
-  let article = null;
+  let article: ReturnType<typeof getArticleById> extends Promise<infer T> ? T : null = null;
   try {
     article = await getArticleById(id);
   } catch (error) {
     console.warn("Error fetching article server-side:", error);
   }
 
-  const articleSchema = article
+  // Jaminan 100% objek plain agar lolos validasi serialisasi Next.js RSC ke Client Component
+  const plainArticle = article
+    ? {
+        id: String(article.id),
+        slug: article.slug ? String(article.slug) : undefined,
+        title: String(article.title || ""),
+        content: String(article.content || ""),
+        createdAt: {
+          seconds: Number(article.createdAt?.seconds ?? Math.floor(Date.now() / 1000)),
+          nanoseconds: Number(article.createdAt?.nanoseconds ?? 0),
+        },
+      }
+    : null;
+
+  const articleSchema = plainArticle
     ? {
         "@context": "https://schema.org",
         "@type": "Article",
-        headline: article.title,
-        description: article.content ? article.content.substring(0, 160).replace(/\n/g, " ") : "",
+        headline: plainArticle.title,
+        description: plainArticle.content ? plainArticle.content.substring(0, 160).replace(/\n/g, " ") : "",
         author: {
           "@type": "Organization",
           name: "Bimbel Kiddos Zone",
@@ -96,12 +112,12 @@ export default async function ArticleDetailPage({ params }: PageProps) {
             url: `${SITE_CONFIG.url}/assets/Logo_Kiddos.png`,
           },
         },
-        datePublished: article.createdAt?.seconds
-          ? new Date(article.createdAt.seconds * 1000).toISOString()
+        datePublished: plainArticle.createdAt?.seconds
+          ? new Date(plainArticle.createdAt.seconds * 1000).toISOString()
           : undefined,
         mainEntityOfPage: {
           "@type": "WebPage",
-          "@id": `${SITE_CONFIG.url}/artikel/${article.slug || id}`,
+          "@id": `${SITE_CONFIG.url}/artikel/${plainArticle.slug || id}`,
         },
       }
     : null;
@@ -122,13 +138,13 @@ export default async function ArticleDetailPage({ params }: PageProps) {
         name: "Artikel",
         item: `${SITE_CONFIG.url}/artikel`,
       },
-      ...(article
+      ...(plainArticle
         ? [
             {
               "@type": "ListItem",
               position: 3,
-              name: article.title,
-              item: `${SITE_CONFIG.url}/artikel/${article.slug || id}`,
+              name: plainArticle.title,
+              item: `${SITE_CONFIG.url}/artikel/${plainArticle.slug || id}`,
             },
           ]
         : []),
@@ -147,7 +163,7 @@ export default async function ArticleDetailPage({ params }: PageProps) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
         />
       )}
-      <ArticleDetailView id={id} initialArticle={article} />
+      <ArticleDetailView id={id} initialArticle={plainArticle} />
     </>
   );
 }
