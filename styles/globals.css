@@ -1,25 +1,25 @@
 @import "tailwindcss";
 @import "@fontsource/baloo-2";
 
+:root {
+  --font-poppins: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-baloo-2: "Baloo 2", cursive, sans-serif;
+}
+
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 5.5rem;
 }
 
-nav {
-  font-family: "Baloo 2", sans-serif;
+body {
+  font-family: var(--font-poppins);
 }
 
-footer {
-  font-family: "Baloo 2", sans-serif;
-}
-
-.baloo {
-  font-family: "Baloo 2", sans-serif;
-}
-
-#about-us{
-  font-family: "Baloo 2", sans-serif;
+nav,
+footer,
+.baloo,
+#about-us {
+  font-family: var(--font-baloo-2);
 }
 
 /* Hero banner pagination (white dots over dark/green banner) */

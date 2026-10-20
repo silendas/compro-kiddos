@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
+import ProgramsList from "@comp/ProgramsList";
 import { SITE_CONFIG } from "@data/siteConfig";
-import { PROGRAM_LIST } from "@data/programs";
 
 export const metadata: Metadata = {
   title: "Program Les & Bimbingan Belajar di Bogor",
@@ -17,45 +16,54 @@ export const metadata: Metadata = {
       "Tersedia berbagai pilihan program belajar interaktif untuk anak usia 3 tahun hingga jenjang SMA di Bogor.",
     url: "https://www.bimbelkiddoszone.com/program-les",
     type: "website",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Program Bimbingan Belajar Bimbel Kiddos Zone Bogor",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Program Les & Bimbingan Belajar di Bogor - Bimbel Kiddos Zone",
+    description:
+      "Tersedia berbagai pilihan program belajar interaktif untuk anak usia 3 tahun hingga jenjang SMA di Bogor.",
+    images: ["/og-image.jpg"],
   },
 };
 
 export default function ProgramLesPage() {
-  const whatsappUrl = `https://wa.me/${SITE_CONFIG.contact.whatsappNumber}?text=${encodeURIComponent(
-    SITE_CONFIG.contact.whatsappMessage
-  )}`;
-
-  // Course schema for Google Rich Results
-  const courseSchema = {
+  const breadcrumbSchema = {
     "@context": "https://schema.org",
-    "@type": "ItemList",
-    itemListElement: PROGRAM_LIST.map((program, idx) => ({
-      "@type": "ListItem",
-      position: idx + 1,
-      item: {
-        "@type": "Course",
-        name: program.title,
-        description: program.desc,
-        provider: {
-          "@type": "EducationalOrganization",
-          name: SITE_CONFIG.name,
-          sameAs: SITE_CONFIG.url,
-        },
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: SITE_CONFIG.url,
       },
-    })),
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Program Les Bogor",
+        item: `${SITE_CONFIG.url}/program-les`,
+      },
+    ],
   };
 
   return (
     <div className="max-w-5xl mx-auto px-4 pt-6 md:pt-10 pb-16 min-h-[80vh]">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(courseSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-
       <nav className="mb-4 text-sm text-gray-600" aria-label="Breadcrumb">
         <ol className="list-reset flex">
           <li>
-            <Link href="/" className="text-green-700 hover:underline">
+            <Link href="/" className="text-orange-600 hover:underline">
               Home
             </Link>
           </li>
@@ -78,41 +86,7 @@ export default function ProgramLesPage() {
         </p>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {PROGRAM_LIST.map((item) => (
-          <article
-            key={item.id}
-            className="bg-white rounded-xl shadow-md overflow-hidden transform hover:scale-105 transition duration-300 flex flex-col"
-          >
-            <div className="relative h-48 w-full">
-              <Image
-                src={item.img}
-                alt={`Program ${item.title} di Bimbel Kiddos Zone Bogor`}
-                fill
-                className="w-full h-full object-cover"
-                sizes="(max-width: 768px) 100vw, 33vw"
-              />
-            </div>
-            <div className="p-4 flex flex-col flex-1">
-              <h2 className="text-xl font-bold text-gray-800 baloo">
-                {item.title}
-              </h2>
-              <p className="mt-2 text-gray-600 text-sm flex-1 leading-relaxed">
-                {item.desc}
-              </p>
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-4 flex justify-center bg-green-700 text-white px-4 py-2 rounded-full font-semibold hover:bg-green-800 transition duration-300 shadow"
-                aria-label={`Daftar program ${item.title} via WhatsApp`}
-              >
-                Daftar Sekarang
-              </a>
-            </div>
-          </article>
-        ))}
-      </div>
+      <ProgramsList />
     </div>
   );
 }

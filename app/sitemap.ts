@@ -2,6 +2,7 @@ import { MetadataRoute } from "next";
 import { SITE_CONFIG } from "@data/siteConfig";
 import { db } from "@lib/firebase";
 import { collection, getDocs } from "firebase/firestore";
+import { createSlug } from "@lib/articleService";
 export const dynamic = "force-static";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -48,8 +49,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         ? new Date(data.createdAt.seconds * 1000)
         : new Date();
 
+      const identifier = data.slug || (data.title ? createSlug(data.title) : docSnap.id);
+
       return {
-        url: `${baseUrl}/artikel/${docSnap.id}`,
+        url: `${baseUrl}/artikel/${identifier}`,
         lastModified,
         changeFrequency: "weekly" as const,
         priority: 0.6,

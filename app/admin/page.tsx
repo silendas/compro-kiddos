@@ -1,237 +1,68 @@
 "use client";
 
-import { useState, useEffect, FormEvent } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   FaSignOutAlt,
   FaComments,
   FaNewspaper,
   FaStar,
-  FaPlus,
-  FaTrash,
-  FaEdit,
-  FaCheck,
-  FaTimes,
   FaExternalLinkAlt,
-  FaCloudDownloadAlt,
+  FaShieldAlt,
+  FaArrowRight,
+  FaUserCircle,
+  FaChalkboardTeacher,
+  FaImages,
+  FaBookOpen,
+  FaMapMarkerAlt,
 } from "react-icons/fa";
 
-import { useAuth, ProtectedRoute } from "@lib/authContext";
-import {
-  getTestimonials,
-  addTestimonial,
-  updateTestimonial,
-  deleteTestimonial,
-  seedInitialTestimonials,
-  Testimonial,
-} from "@lib/testimonialService";
-import {
-  getArticles,
-  addArticle,
-  deleteArticle,
-  Article,
-} from "@lib/articleService";
+import { useAuth } from "@lib/authContext";
+import { getTestimonials, Testimonial } from "@lib/testimonialService";
+import { getArticles, Article } from "@lib/articleService";
+import { getTeachers, Teacher } from "@lib/teacherService";
+import { getGallery, GalleryItem } from "@lib/galleryService";
+import { getPrograms, Program } from "@lib/programService";
+import { getBranches, BranchItem } from "@lib/branchService";
 
 export default function AdminDashboardPage() {
-  return (
-    <ProtectedRoute>
-      <AdminDashboardContent />
-    </ProtectedRoute>
-  );
-}
-
-function AdminDashboardContent() {
   const { user, logout } = useAuth();
 
-  const [activeTab, setActiveTab] = useState<"testimonials" | "articles">("testimonials");
-  const [toastMessage, setToastMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
-
-  // Testimonials State
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-  const [loadingTestimonials, setLoadingTestimonials] = useState(false);
-  const [editingTestimonialId, setEditingTestimonialId] = useState<string | null>(null);
-
-  const [tName, setTName] = useState("");
-  const [tRole, setTRole] = useState("");
-  const [tContent, setTContent] = useState("");
-  const [tRating, setTRating] = useState<number>(5);
-  const [tProgram, setTProgram] = useState("");
-  const [savingTestimonial, setSavingTestimonial] = useState(false);
-
-  // Articles State
   const [articles, setArticles] = useState<Article[]>([]);
-  const [loadingArticles, setLoadingArticles] = useState(false);
-  const [articleTitle, setArticleTitle] = useState("");
-  const [articleContent, setArticleContent] = useState("");
-  const [savingArticle, setSavingArticle] = useState(false);
-
-  const showToast = (text: string, type: "success" | "error" = "success") => {
-    setToastMessage({ text, type });
-    setTimeout(() => setToastMessage(null), 4000);
-  };
-
-  // Fetch Testimonials
-  const loadTestimonials = async () => {
-    setLoadingTestimonials(true);
-    try {
-      const data = await getTestimonials();
-      setTestimonials(data);
-    } catch (err) {
-      console.error(err);
-      showToast("Gagal memuat testimoni dari Firestore", "error");
-    } finally {
-      setLoadingTestimonials(false);
-    }
-  };
-
-  // Fetch Articles
-  const loadArticles = async () => {
-    setLoadingArticles(true);
-    try {
-      const data = await getArticles();
-      setArticles(data);
-    } catch (err) {
-      console.error(err);
-      showToast("Gagal memuat artikel dari Firestore", "error");
-    } finally {
-      setLoadingArticles(false);
-    }
-  };
+  const [teachers, setTeachers] = useState<Teacher[]>([]);
+  const [gallery, setGallery] = useState<GalleryItem[]>([]);
+  const [programs, setPrograms] = useState<Program[]>([]);
+  const [branches, setBranches] = useState<BranchItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadTestimonials();
-    loadArticles();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // Handle Submit Testimonial (Add / Edit)
-  const handleTestimonialSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    if (!tName.trim() || !tContent.trim()) {
-      showToast("Nama dan isi ulasan wajib diisi", "error");
-      return;
-    }
-
-    setSavingTestimonial(true);
-    try {
-      if (editingTestimonialId) {
-        // Edit existing
-        await updateTestimonial(editingTestimonialId, {
-          name: tName,
-          role: tRole || "Orang Tua Siswa",
-          content: tContent,
-          rating: tRating,
-          program: tProgram,
-        });
-        showToast("Testimoni berhasil diperbarui!");
-      } else {
-        // Add new
-        await addTestimonial({
-          name: tName,
-          role: tRole || "Orang Tua Siswa",
-          content: tContent,
-          rating: tRating,
-          program: tProgram,
-        });
-        showToast("Testimoni baru berhasil ditambahkan ke Firebase!");
+    async function fetchDashboardStats() {
+      setLoading(true);
+      try {
+        const [tData, aData, gData, galData, pData, bData] = await Promise.all([
+          getTestimonials(false),
+          getArticles(),
+          getTeachers(),
+          getGallery(),
+          getPrograms(),
+          getBranches(),
+        ]);
+        setTestimonials(tData);
+        setArticles(aData);
+        setTeachers(gData);
+        setGallery(galData);
+        setPrograms(pData);
+        setBranches(bData);
+      } catch (err) {
+        console.error("Gagal memuat data dashboard:", err);
+      } finally {
+        setLoading(false);
       }
-
-      resetTestimonialForm();
-      await loadTestimonials();
-    } catch (err) {
-      console.error(err);
-      showToast("Terjadi kesalahan saat menyimpan testimoni", "error");
-    } finally {
-      setSavingTestimonial(false);
-    }
-  };
-
-  const startEditTestimonial = (item: Testimonial) => {
-    setEditingTestimonialId(item.id);
-    setTName(item.name);
-    setTRole(item.role);
-    setTContent(item.content);
-    setTRating(item.rating || 5);
-    setTProgram(item.program || "");
-    window.scrollTo({ top: 300, behavior: "smooth" });
-  };
-
-  const resetTestimonialForm = () => {
-    setEditingTestimonialId(null);
-    setTName("");
-    setTRole("");
-    setTContent("");
-    setTRating(5);
-    setTProgram("");
-  };
-
-  const handleDeleteTestimonial = async (id: string, name: string) => {
-    if (!window.confirm(`Yakin ingin menghapus ulasan dari "${name}"?`)) return;
-
-    try {
-      await deleteTestimonial(id);
-      showToast("Testimoni berhasil dihapus");
-      await loadTestimonials();
-    } catch (err) {
-      console.error(err);
-      showToast("Gagal menghapus testimoni", "error");
-    }
-  };
-
-  const handleSeedDefaultTestimonials = async () => {
-    if (
-      !window.confirm(
-        "Apakah Anda ingin menyalin data testimoni bawaan (6 ulasan awal) ke database Firestore Anda?"
-      )
-    ) {
-      return;
     }
 
-    try {
-      const count = await seedInitialTestimonials();
-      showToast(`${count} ulasan berhasil disimpan ke Firestore!`);
-      await loadTestimonials();
-    } catch (err) {
-      console.error(err);
-      showToast("Gagal menyalin testimoni ke Firestore", "error");
-    }
-  };
-
-  // Handle Article Submit
-  const handleArticleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    if (!articleTitle.trim() || !articleContent.trim()) {
-      showToast("Judul dan isi artikel wajib diisi", "error");
-      return;
-    }
-
-    setSavingArticle(true);
-    try {
-      await addArticle(articleTitle, articleContent);
-      setArticleTitle("");
-      setArticleContent("");
-      showToast("Artikel baru berhasil diterbitkan!");
-      await loadArticles();
-    } catch (err) {
-      console.error(err);
-      showToast("Gagal menambahkan artikel", "error");
-    } finally {
-      setSavingArticle(false);
-    }
-  };
-
-  const handleDeleteArticle = async (id: string, title: string) => {
-    if (!window.confirm(`Yakin ingin menghapus artikel "${title}"?`)) return;
-
-    try {
-      await deleteArticle(id);
-      showToast("Artikel berhasil dihapus");
-      await loadArticles();
-    } catch (err) {
-      console.error(err);
-      showToast("Gagal menghapus artikel", "error");
-    }
-  };
+    fetchDashboardStats();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
@@ -244,8 +75,9 @@ function AdminDashboardContent() {
               <h1 className="text-xl font-extrabold text-gray-800 baloo leading-none">
                 Admin Panel Kiddos Zone
               </h1>
-              <p className="text-xs text-gray-500 mt-0.5">
-                Login sebagai: <span className="font-semibold text-gray-700">{user?.email}</span>
+              <p className="text-xs text-gray-500 mt-0.5 flex items-center gap-1.5">
+                <FaUserCircle className="text-gray-400" />
+                Masuk sebagai: <span className="font-semibold text-gray-700">{user?.email}</span>
               </p>
             </div>
           </div>
@@ -254,13 +86,13 @@ function AdminDashboardContent() {
             <Link
               href="/"
               target="_blank"
-              className="inline-flex items-center gap-1.5 text-xs md:text-sm font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100 px-3 py-1.5 rounded-lg border border-teal-200 transition"
+              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100 px-3 py-1.5 rounded-lg border border-teal-200 transition"
             >
               <FaExternalLinkAlt className="text-xs" /> Lihat Web Utama
             </Link>
             <button
               onClick={() => logout()}
-              className="inline-flex items-center gap-1.5 text-xs md:text-sm font-semibold text-red-600 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg border border-red-200 transition"
+              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-red-600 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg border border-red-200 transition"
             >
               <FaSignOutAlt /> Keluar
             </button>
@@ -268,386 +100,274 @@ function AdminDashboardContent() {
         </div>
       </header>
 
-      {/* Toast Notification */}
-      {toastMessage && (
-        <div className="fixed top-20 right-4 z-50 animate-bounce">
-          <div
-            className={`px-5 py-3 rounded-xl shadow-lg text-sm font-bold flex items-center gap-2 ${
-              toastMessage.type === "success"
-                ? "bg-green-600 text-white"
-                : "bg-red-600 text-white"
-            }`}
-          >
-            {toastMessage.type === "success" ? <FaCheck /> : <FaTimes />}
-            <span>{toastMessage.text}</span>
+      {/* Main Container */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 space-y-8">
+        {/* Welcome Banner */}
+        <div className="bg-gradient-to-r from-teal-600 to-emerald-600 rounded-3xl p-6 md:p-8 text-white shadow-md relative overflow-hidden">
+          <div className="relative z-10 max-w-2xl">
+            <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full mb-3">
+              <FaShieldAlt className="text-amber-300" /> Area Terproteksi Admin
+            </span>
+            <h2 className="text-2xl md:text-3xl font-extrabold baloo leading-tight">
+              Selamat Datang di Pusat Kelola Konten
+            </h2>
+            <p className="mt-2 text-sm md:text-base text-teal-50 leading-relaxed font-sans">
+              Kelola seluruh konten website Bimbel Kiddos Zone secara dinamis: Program Les, Galeri Kegiatan, Tenaga Pendidik, Ulasan Testimoni, Artikel Edukasi, dan Lokasi Cabang.
+            </p>
           </div>
         </div>
-      )}
 
-      {/* Main Container */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
-        {/* Navigation Tabs */}
-        <div className="flex border-b border-gray-200 bg-white rounded-t-2xl px-4 pt-2 shadow-sm">
-          <button
-            onClick={() => setActiveTab("testimonials")}
-            className={`flex items-center gap-2 py-3.5 px-5 font-bold text-sm md:text-base border-b-2 transition ${
-              activeTab === "testimonials"
-                ? "border-pink-500 text-pink-600"
-                : "border-transparent text-gray-500 hover:text-gray-800"
-            }`}
-          >
-            <FaComments className="text-lg" />
-            <span>Kelola Testimoni ({testimonials.length})</span>
-          </button>
-          <button
-            onClick={() => setActiveTab("articles")}
-            className={`flex items-center gap-2 py-3.5 px-5 font-bold text-sm md:text-base border-b-2 transition ${
-              activeTab === "articles"
-                ? "border-teal-500 text-teal-600"
-                : "border-transparent text-gray-500 hover:text-gray-800"
-            }`}
-          >
-            <FaNewspaper className="text-lg" />
-            <span>Kelola Artikel ({articles.length})</span>
-          </button>
+        {/* Stats Row */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+          {/* Stat Program */}
+          <div className="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm flex items-center justify-between">
+            <div>
+              <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                Program Les
+              </p>
+              <h3 className="text-2xl font-extrabold text-purple-600 baloo mt-0.5">
+                {loading ? "..." : programs.length}
+              </h3>
+            </div>
+            <div className="w-10 h-10 bg-purple-50 rounded-xl flex items-center justify-center text-purple-600 text-lg shrink-0">
+              <FaBookOpen />
+            </div>
+          </div>
+
+          {/* Stat Galeri */}
+          <div className="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm flex items-center justify-between">
+            <div>
+              <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                Foto Galeri
+              </p>
+              <h3 className="text-2xl font-extrabold text-amber-600 baloo mt-0.5">
+                {loading ? "..." : gallery.length}
+              </h3>
+            </div>
+            <div className="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center text-amber-600 text-lg shrink-0">
+              <FaImages />
+            </div>
+          </div>
+
+          {/* Stat Guru */}
+          <div className="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm flex items-center justify-between">
+            <div>
+              <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                Guru / Tutor
+              </p>
+              <h3 className="text-2xl font-extrabold text-emerald-600 baloo mt-0.5">
+                {loading ? "..." : teachers.length}
+              </h3>
+            </div>
+            <div className="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600 text-lg shrink-0">
+              <FaChalkboardTeacher />
+            </div>
+          </div>
+
+          {/* Stat Testimoni */}
+          <div className="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm flex items-center justify-between">
+            <div>
+              <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                Testimoni
+              </p>
+              <h3 className="text-2xl font-extrabold text-pink-600 baloo mt-0.5">
+                {loading ? "..." : testimonials.length}
+              </h3>
+            </div>
+            <div className="w-10 h-10 bg-pink-50 rounded-xl flex items-center justify-center text-pink-500 text-lg shrink-0">
+              <FaComments />
+            </div>
+          </div>
+
+          {/* Stat Artikel */}
+          <div className="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm flex items-center justify-between">
+            <div>
+              <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                Artikel
+              </p>
+              <h3 className="text-2xl font-extrabold text-teal-600 baloo mt-0.5">
+                {loading ? "..." : articles.length}
+              </h3>
+            </div>
+            <div className="w-10 h-10 bg-teal-50 rounded-xl flex items-center justify-center text-teal-600 text-lg shrink-0">
+              <FaNewspaper />
+            </div>
+          </div>
+
+          {/* Stat Cabang */}
+          <div className="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm flex items-center justify-between">
+            <div>
+              <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                Lokasi Cabang
+              </p>
+              <h3 className="text-2xl font-extrabold text-blue-600 baloo mt-0.5">
+                {loading ? "..." : branches.length}
+              </h3>
+            </div>
+            <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 text-lg shrink-0">
+              <FaMapMarkerAlt />
+            </div>
+          </div>
         </div>
 
-        {/* ======================================================== */}
-        {/* TAB 1: KELOLA TESTIMONI                                  */}
-        {/* ======================================================== */}
-        {activeTab === "testimonials" && (
-          <div className="bg-white rounded-b-2xl p-6 md:p-8 shadow-sm border border-gray-100">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-gray-100">
+        {/* Action Cards: Navigasi Menu Kelola */}
+        <div>
+          <h3 className="text-xl font-bold text-gray-800 baloo mb-4">
+            Menu Pengelolaan Website
+          </h3>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Card Kelola Program */}
+            <div className="bg-white border border-gray-200 hover:border-purple-300 rounded-3xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
               <div>
-                <h2 className="text-2xl font-bold text-gray-800 baloo">
-                  Ulasan &amp; Cerita Orang Tua / Siswa
-                </h2>
-                <p className="text-sm text-gray-500 mt-0.5">
-                  Ulasan yang tersimpan di sini akan langsung tampil pada slider halaman depan website.
+                <div className="w-12 h-12 bg-purple-100 text-purple-600 rounded-2xl flex items-center justify-center text-2xl mb-4 group-hover:scale-105 transition">
+                  <FaBookOpen />
+                </div>
+                <h4 className="text-xl font-bold text-gray-800 baloo group-hover:text-purple-600 transition">
+                  Kelola Program Belajar
+                </h4>
+                <p className="text-xs sm:text-sm text-gray-600 mt-2 leading-relaxed">
+                  Tambah dan perbarui program les (Calistung, PraCalis, Mapel SD), atur deskripsi, cover, serta status program unggulan.
                 </p>
               </div>
-              <button
-                type="button"
-                onClick={handleSeedDefaultTestimonials}
-                className="inline-flex items-center gap-2 text-xs md:text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 px-3.5 py-2 rounded-xl border border-gray-300 transition"
-                title="Salin 6 data ulasan default ke database Firestore"
-              >
-                <FaCloudDownloadAlt className="text-base text-pink-500" />
-                Simpan Ulasan Bawaan ke Firestore
-              </button>
-            </div>
 
-            {/* Form Input / Edit Testimoni */}
-            <div className="bg-pink-50/50 border border-pink-100 rounded-2xl p-5 md:p-6 mb-8">
-              <h3 className="text-lg font-bold text-pink-700 baloo flex items-center gap-2 mb-4">
-                {editingTestimonialId ? (
-                  <>
-                    <FaEdit /> Edit Testimoni
-                  </>
-                ) : (
-                  <>
-                    <FaPlus /> Tambah Testimoni Baru
-                  </>
-                )}
-              </h3>
-
-              <form onSubmit={handleTestimonialSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-xs font-bold text-gray-700 mb-1">
-                      Nama Orang Tua / Siswa *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={tName}
-                      onChange={(e) => setTName(e.target.value)}
-                      placeholder="Contoh: Ibu Dini"
-                      className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-pink-500 focus:outline-none"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-gray-700 mb-1">
-                      Status / Kelas Siswa *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={tRole}
-                      onChange={(e) => setTRole(e.target.value)}
-                      placeholder="Contoh: Orang Tua Siswa Kelas 2 SD"
-                      className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-pink-500 focus:outline-none"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-gray-700 mb-1">
-                      Program Yang Diambil (Opsional)
-                    </label>
-                    <input
-                      type="text"
-                      value={tProgram}
-                      onChange={(e) => setTProgram(e.target.value)}
-                      placeholder="Contoh: PraCalis / Prisma / SD"
-                      className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-pink-500 focus:outline-none"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                  <div className="md:col-span-1">
-                    <label className="block text-xs font-bold text-gray-700 mb-1">
-                      Rating Bintang
-                    </label>
-                    <select
-                      value={tRating}
-                      onChange={(e) => setTRating(Number(e.target.value))}
-                      className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-gray-700 focus:ring-2 focus:ring-pink-500 focus:outline-none"
-                    >
-                      <option value={5}>⭐⭐⭐⭐⭐ (5 Bintang)</option>
-                      <option value={4}>⭐⭐⭐⭐ (4 Bintang)</option>
-                      <option value={3}>⭐⭐⭐ (3 Bintang)</option>
-                    </select>
-                  </div>
-
-                  <div className="md:col-span-3">
-                    <label className="block text-xs font-bold text-gray-700 mb-1">
-                      Isi Testimoni / Pengalaman Belajar *
-                    </label>
-                    <textarea
-                      required
-                      rows={3}
-                      value={tContent}
-                      onChange={(e) => setTContent(e.target.value)}
-                      placeholder="Tulis ulasan positif atau pengalaman anak selama belajar di Kiddos Zone..."
-                      className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2 text-sm focus:ring-2 focus:ring-pink-500 focus:outline-none"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3 pt-2">
-                  <button
-                    type="submit"
-                    disabled={savingTestimonial}
-                    className="bg-pink-600 hover:bg-pink-700 text-white font-bold text-sm px-6 py-2.5 rounded-xl shadow transition flex items-center gap-2 disabled:opacity-50"
-                  >
-                    {savingTestimonial ? (
-                      <>
-                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                        Menyimpan...
-                      </>
-                    ) : editingTestimonialId ? (
-                      <>
-                        <FaCheck /> Perbarui Testimoni
-                      </>
-                    ) : (
-                      <>
-                        <FaPlus /> Simpan ke Firebase
-                      </>
-                    )}
-                  </button>
-
-                  {editingTestimonialId && (
-                    <button
-                      type="button"
-                      onClick={resetTestimonialForm}
-                      className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold text-sm px-4 py-2.5 rounded-xl transition"
-                    >
-                      Batal Edit
-                    </button>
-                  )}
-                </div>
-              </form>
-            </div>
-
-            {/* Daftar Testimoni Tersimpan */}
-            <div>
-              <h3 className="text-lg font-bold text-gray-800 baloo mb-3">
-                Daftar Testimoni Aktif
-              </h3>
-
-              {loadingTestimonials ? (
-                <div className="py-10 text-center text-gray-500">
-                  <div className="w-8 h-8 border-4 border-pink-500 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
-                  Memuat data testimoni...
-                </div>
-              ) : testimonials.length === 0 ? (
-                <div className="py-8 text-center text-gray-500 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-                  Belum ada testimoni tersimpan.
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {testimonials.map((item) => (
-                    <div
-                      key={item.id}
-                      className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition flex flex-col justify-between"
-                    >
-                      <div>
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="font-bold text-gray-800 text-base baloo">
-                            {item.name}
-                          </span>
-                          <div className="flex text-amber-400 text-xs gap-0.5">
-                            {[...Array(item.rating || 5)].map((_, i) => (
-                              <FaStar key={i} />
-                            ))}
-                          </div>
-                        </div>
-
-                        <p className="text-xs text-pink-600 font-semibold mb-2">
-                          {item.role} {item.program ? `• ${item.program}` : ""}
-                        </p>
-
-                        <p className="text-sm text-gray-600 leading-relaxed italic line-clamp-4">
-                          {item.content}
-                        </p>
-                      </div>
-
-                      <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-end gap-2">
-                        <button
-                          onClick={() => startEditTestimonial(item)}
-                          className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-800 bg-blue-50 px-2.5 py-1.5 rounded-lg transition"
-                        >
-                          <FaEdit /> Edit
-                        </button>
-                        <button
-                          onClick={() => handleDeleteTestimonial(item.id, item.name)}
-                          className="inline-flex items-center gap-1 text-xs font-semibold text-red-600 hover:text-red-800 bg-red-50 px-2.5 py-1.5 rounded-lg transition"
-                        >
-                          <FaTrash /> Hapus
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* ======================================================== */}
-        {/* TAB 2: KELOLA ARTIKEL                                    */}
-        {/* ======================================================== */}
-        {activeTab === "articles" && (
-          <div className="bg-white rounded-b-2xl p-6 md:p-8 shadow-sm border border-gray-100">
-            <div className="mb-6 pb-4 border-b border-gray-100">
-              <h2 className="text-2xl font-bold text-gray-800 baloo">
-                Artikel Edukasi &amp; Tips Belajar
-              </h2>
-              <p className="text-sm text-gray-500 mt-0.5">
-                Kelola artikel yang terbit di blog Bimbel Kiddos Zone Bogor.
-              </p>
-            </div>
-
-            {/* Form Tambah Artikel */}
-            <div className="bg-teal-50/50 border border-teal-100 rounded-2xl p-5 md:p-6 mb-8">
-              <h3 className="text-lg font-bold text-teal-800 baloo flex items-center gap-2 mb-4">
-                <FaPlus /> Tulis Artikel Baru
-              </h3>
-              <form onSubmit={handleArticleSubmit} className="space-y-4">
-                <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1">
-                    Judul Artikel *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={articleTitle}
-                    onChange={(e) => setArticleTitle(e.target.value)}
-                    placeholder="Contoh: 5 Cara Menyenangkan Melatih Anak Membaca Tanpa Paksaan"
-                    className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1">
-                    Isi Lengkap Artikel *
-                  </label>
-                  <textarea
-                    required
-                    rows={6}
-                    value={articleContent}
-                    onChange={(e) => setArticleContent(e.target.value)}
-                    placeholder="Tulis materi artikel, panduan, atau tips belajar anak..."
-                    className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={savingArticle}
-                  className="bg-teal-600 hover:bg-teal-700 text-white font-bold text-sm px-6 py-2.5 rounded-xl shadow transition flex items-center gap-2 disabled:opacity-50"
+              <div className="mt-6 pt-4 border-t border-gray-100">
+                <Link
+                  href="/admin/program"
+                  className="inline-flex items-center justify-between w-full bg-purple-600 hover:bg-purple-700 text-white font-bold text-sm px-4 py-2.5 rounded-xl shadow transition"
                 >
-                  {savingArticle ? (
-                    <>
-                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      Menerbitkan...
-                    </>
-                  ) : (
-                    <>
-                      <FaPlus /> Terbitkan Artikel
-                    </>
-                  )}
-                </button>
-              </form>
+                  <span>Buka Kelola Program ({programs.length})</span>
+                  <FaArrowRight />
+                </Link>
+              </div>
             </div>
 
-            {/* Daftar Artikel */}
-            <div>
-              <h3 className="text-lg font-bold text-gray-800 baloo mb-3">
-                Daftar Artikel Terbit ({articles.length})
-              </h3>
+            {/* Card Kelola Galeri */}
+            <div className="bg-white border border-gray-200 hover:border-amber-400 rounded-3xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+              <div>
+                <div className="w-12 h-12 bg-amber-100 text-amber-700 rounded-2xl flex items-center justify-center text-2xl mb-4 group-hover:scale-105 transition">
+                  <FaImages />
+                </div>
+                <h4 className="text-xl font-bold text-gray-800 baloo group-hover:text-amber-700 transition">
+                  Kelola Galeri Foto
+                </h4>
+                <p className="text-xs sm:text-sm text-gray-600 mt-2 leading-relaxed">
+                  Unggah dokumentasi foto kegiatan belajar anak dengan kompresi otomatis ringan, beri judul kegiatan, dan kelola album.
+                </p>
+              </div>
 
-              {loadingArticles ? (
-                <div className="py-10 text-center text-gray-500">
-                  <div className="w-8 h-8 border-4 border-teal-500 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
-                  Memuat data artikel...
-                </div>
-              ) : articles.length === 0 ? (
-                <div className="py-8 text-center text-gray-500 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-                  Belum ada artikel yang diterbitkan.
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {articles.map((art) => (
-                    <div
-                      key={art.id}
-                      className="bg-white border border-gray-200 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:border-teal-300 transition"
-                    >
-                      <div>
-                        <h4 className="font-bold text-gray-800 text-base hover:text-teal-600 transition">
-                          <Link href={`/artikel/${art.id}`} target="_blank">
-                            {art.title}
-                          </Link>
-                        </h4>
-                        <p className="text-xs text-gray-500 mt-1 line-clamp-1">
-                          {art.content}
-                        </p>
-                      </div>
+              <div className="mt-6 pt-4 border-t border-gray-100">
+                <Link
+                  href="/admin/galeri"
+                  className="inline-flex items-center justify-between w-full bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm px-4 py-2.5 rounded-xl shadow transition"
+                >
+                  <span>Buka Kelola Galeri ({gallery.length})</span>
+                  <FaArrowRight />
+                </Link>
+              </div>
+            </div>
 
-                      <div className="flex items-center gap-2 shrink-0">
-                        <Link
-                          href={`/artikel/${art.id}`}
-                          target="_blank"
-                          className="inline-flex items-center gap-1 text-xs font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-lg transition"
-                        >
-                          <FaExternalLinkAlt className="text-xs" /> Baca
-                        </Link>
-                        <button
-                          onClick={() => handleDeleteArticle(art.id, art.title)}
-                          className="inline-flex items-center gap-1 text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition"
-                        >
-                          <FaTrash className="text-xs" /> Hapus
-                        </button>
-                      </div>
-                    </div>
-                  ))}
+            {/* Card Kelola Guru */}
+            <div className="bg-white border border-gray-200 hover:border-emerald-300 rounded-3xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+              <div>
+                <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl mb-4 group-hover:scale-105 transition">
+                  <FaChalkboardTeacher />
                 </div>
-              )}
+                <h4 className="text-xl font-bold text-gray-800 baloo group-hover:text-emerald-600 transition">
+                  Kelola Guru &amp; Tutor
+                </h4>
+                <p className="text-xs sm:text-sm text-gray-600 mt-2 leading-relaxed">
+                  Tambah data tenaga pengajar baru, upload foto profil otomatis terkompres, serta atur mata pelajaran dan program yang diajar.
+                </p>
+              </div>
+
+              <div className="mt-6 pt-4 border-t border-gray-100">
+                <Link
+                  href="/admin/guru"
+                  className="inline-flex items-center justify-between w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm px-4 py-2.5 rounded-xl shadow transition"
+                >
+                  <span>Buka Kelola Guru ({teachers.length})</span>
+                  <FaArrowRight />
+                </Link>
+              </div>
+            </div>
+
+            {/* Card Kelola Review */}
+            <div className="bg-white border border-gray-200 hover:border-pink-300 rounded-3xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+              <div>
+                <div className="w-12 h-12 bg-pink-100 text-pink-600 rounded-2xl flex items-center justify-center text-2xl mb-4 group-hover:scale-105 transition">
+                  <FaStar />
+                </div>
+                <h4 className="text-xl font-bold text-gray-800 baloo group-hover:text-pink-600 transition">
+                  Kelola Review &amp; Testimoni
+                </h4>
+                <p className="text-xs sm:text-sm text-gray-600 mt-2 leading-relaxed">
+                  Tambah ulasan pengalaman orang tua baru melalui form input, atur rating bintang (1-5), upload foto avatar, dan perbarui testimoni.
+                </p>
+              </div>
+
+              <div className="mt-6 pt-4 border-t border-gray-100">
+                <Link
+                  href="/admin/review"
+                  className="inline-flex items-center justify-between w-full bg-pink-600 hover:bg-pink-700 text-white font-bold text-sm px-4 py-2.5 rounded-xl shadow transition"
+                >
+                  <span>Buka Kelola Review ({testimonials.length})</span>
+                  <FaArrowRight />
+                </Link>
+              </div>
+            </div>
+
+            {/* Card Kelola Artikel */}
+            <div className="bg-white border border-gray-200 hover:border-teal-300 rounded-3xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+              <div>
+                <div className="w-12 h-12 bg-teal-100 text-teal-600 rounded-2xl flex items-center justify-center text-2xl mb-4 group-hover:scale-105 transition">
+                  <FaNewspaper />
+                </div>
+                <h4 className="text-xl font-bold text-gray-800 baloo group-hover:text-teal-600 transition">
+                  Kelola Artikel &amp; Berita
+                </h4>
+                <p className="text-xs sm:text-sm text-gray-600 mt-2 leading-relaxed">
+                  Tulis artikel edukasi baru dengan form judul dan konten lengkap, publikasikan tips parenting, materi calistung, dan kelola postingan blog.
+                </p>
+              </div>
+
+              <div className="mt-6 pt-4 border-t border-gray-100">
+                <Link
+                  href="/admin/artikel"
+                  className="inline-flex items-center justify-between w-full bg-teal-600 hover:bg-teal-700 text-white font-bold text-sm px-4 py-2.5 rounded-xl shadow transition"
+                >
+                  <span>Buka Kelola Artikel ({articles.length})</span>
+                  <FaArrowRight />
+                </Link>
+              </div>
+            </div>
+
+            {/* Card Kelola Cabang */}
+            <div className="bg-white border border-gray-200 hover:border-blue-300 rounded-3xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+              <div>
+                <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-2xl mb-4 group-hover:scale-105 transition">
+                  <FaMapMarkerAlt />
+                </div>
+                <h4 className="text-xl font-bold text-gray-800 baloo group-hover:text-blue-600 transition">
+                  Kelola Lokasi Cabang
+                </h4>
+                <p className="text-xs sm:text-sm text-gray-600 mt-2 leading-relaxed">
+                  Tambah dan kelola titik lokasi cabang bimbel di Bogor, tandai kantor pusat, nomor kontak WhatsApp cabang, dan link navigasi Google Maps.
+                </p>
+              </div>
+
+              <div className="mt-6 pt-4 border-t border-gray-100">
+                <Link
+                  href="/admin/cabang"
+                  className="inline-flex items-center justify-between w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm px-4 py-2.5 rounded-xl shadow transition"
+                >
+                  <span>Buka Kelola Cabang ({branches.length})</span>
+                  <FaArrowRight />
+                </Link>
+              </div>
             </div>
           </div>
-        )}
+        </div>
       </main>
     </div>
   );

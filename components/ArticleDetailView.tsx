@@ -6,13 +6,19 @@ import Link from "next/link";
 import { FiArrowLeft } from "react-icons/fi";
 import { getArticleById, Article } from "@lib/articleService";
 
-export default function ArticleDetailView({ id }: { id: string }) {
+export default function ArticleDetailView({
+  id,
+  initialArticle,
+}: {
+  id: string;
+  initialArticle?: Article | null;
+}) {
   const router = useRouter();
-  const [article, setArticle] = useState<Article | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [article, setArticle] = useState<Article | null>(initialArticle || null);
+  const [loading, setLoading] = useState(!initialArticle);
 
   useEffect(() => {
-    if (!id) return;
+    if (!id || initialArticle) return;
     getArticleById(id)
       .then((data) => {
         setArticle(data);
@@ -22,12 +28,12 @@ export default function ArticleDetailView({ id }: { id: string }) {
         console.error("Gagal mengambil artikel:", err);
         setLoading(false);
       });
-  }, [id]);
+  }, [id, initialArticle]);
 
   if (loading) {
     return (
       <div className="py-16 text-center">
-        <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-green-700 border-t-transparent mb-2"></div>
+        <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-orange-500 border-t-transparent mb-2"></div>
         <p className="text-gray-600">Memuat artikel...</p>
       </div>
     );
@@ -39,7 +45,7 @@ export default function ArticleDetailView({ id }: { id: string }) {
         <p className="text-red-500 text-lg mb-4">Artikel tidak ditemukan.</p>
         <Link
           href="/artikel"
-          className="inline-block bg-green-700 text-white px-6 py-2 rounded-lg font-semibold hover:bg-green-800 transition"
+          className="inline-block bg-orange-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-orange-600 transition"
         >
           Kembali ke Daftar Artikel
         </Link>
@@ -47,45 +53,18 @@ export default function ArticleDetailView({ id }: { id: string }) {
     );
   }
 
-  const articleSchema = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    headline: article.title,
-    description: article.content.substring(0, 160),
-    author: {
-      "@type": "Organization",
-      name: "Bimbel Kiddos Zone",
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "Bimbel Kiddos Zone",
-      logo: {
-        "@type": "ImageObject",
-        url: "https://www.bimbelkiddoszone.com/assets/Logo_Kiddos.png",
-      },
-    },
-    datePublished: article.createdAt?.seconds
-      ? new Date(article.createdAt.seconds * 1000).toISOString()
-      : undefined,
-  };
-
   return (
     <article className="max-w-4xl mx-auto px-4 pt-6 md:pt-10 pb-16 min-h-[80vh]">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
-      />
-
       <nav className="mb-4 text-sm text-gray-600" aria-label="Breadcrumb">
         <ol className="list-reset flex flex-wrap gap-1">
           <li>
-            <Link href="/" className="text-green-700 hover:underline">
+            <Link href="/" className="text-orange-600 hover:underline">
               Home
             </Link>
           </li>
           <li>/</li>
           <li>
-            <Link href="/artikel" className="text-green-700 hover:underline">
+            <Link href="/artikel" className="text-orange-600 hover:underline">
               Artikel
             </Link>
           </li>
@@ -99,7 +78,7 @@ export default function ArticleDetailView({ id }: { id: string }) {
       <div className="mb-6">
         <button
           onClick={() => router.back()}
-          className="flex items-center text-green-700 hover:underline font-medium cursor-pointer"
+          className="flex items-center text-orange-600 hover:underline font-medium cursor-pointer"
         >
           <FiArrowLeft className="mr-1" /> Kembali
         </button>

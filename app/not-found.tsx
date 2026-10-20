@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import logo from "@asset/Logo_Kiddos.png";
+import logo from "@asset/Logo_Kiddos.webp";
 import { useEffect, useState } from "react";
 
 export default function NotFoundPage() {
@@ -17,6 +17,8 @@ export default function NotFoundPage() {
 
   return (
     <div className="min-h-[80vh] flex flex-col justify-center items-center text-center bg-gray-50 px-4 py-16">
+      <title>404 - Halaman Tidak Ditemukan | Bimbel Kiddos Zone</title>
+      <meta name="robots" content="noindex, nofollow" />
       <Image
         src={logo}
         alt="Logo Bimbel Kiddos Zone"
@@ -33,7 +35,7 @@ export default function NotFoundPage() {
       </p>
       <Link
         href="/"
-        className="mt-6 px-6 py-3 bg-green-700 text-white text-base md:text-lg font-bold rounded-full shadow hover:bg-green-800 transition duration-300"
+        className="mt-6 px-6 py-3 bg-orange-500 text-white text-base md:text-lg font-bold rounded-full shadow hover:bg-orange-600 transition duration-300"
       >
         Kembali ke Beranda
       </Link>

@@ -25,7 +25,7 @@ export default function ArtikelList() {
   if (loading) {
     return (
       <div className="py-12 text-center">
-        <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-green-700 border-t-transparent mb-2"></div>
+        <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-orange-500 border-t-transparent mb-2"></div>
         <p className="text-gray-600">Memuat artikel...</p>
       </div>
     );
@@ -56,8 +56,8 @@ export default function ArtikelList() {
                   <p>{article.content.substring(0, MAX_SNIPPET_LENGTH)}...</p>
                   <div className="mt-4">
                     <Link
-                      href={`/artikel/${article.id}`}
-                      className="text-green-700 hover:text-green-800 font-semibold"
+                      href={`/artikel/${article.slug || article.id}`}
+                      className="text-orange-600 hover:text-orange-700 font-semibold"
                     >
                       Baca selengkapnya &rarr;
                     </Link>
@@ -69,7 +69,7 @@ export default function ArtikelList() {
                   <div className="mt-4">
                     <Link
                       href={`/artikel/${article.id}`}
-                      className="text-green-700 hover:text-green-800 font-semibold"
+                      className="text-orange-600 hover:text-orange-700 font-semibold"
                     >
                       Baca selengkapnya &rarr;
                     </Link>

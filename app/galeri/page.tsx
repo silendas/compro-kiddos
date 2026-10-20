@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
-import { GALLERY_LIST } from "@data/gallery";
+import GalleryGrid from "@comp/GalleryGrid";
+
+import { SITE_CONFIG } from "@data/siteConfig";
 
 export const metadata: Metadata = {
   title: "Galeri Kegiatan Belajar Siswa",
@@ -16,16 +17,54 @@ export const metadata: Metadata = {
       "Lihat keseruan belajar, bermain edukatif, dan keceriaan para siswa di Bimbel Kiddos Zone Bogor.",
     url: "https://www.bimbelkiddoszone.com/galeri",
     type: "website",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Galeri Siswa Bimbel Kiddos Zone Bogor",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Galeri Kegiatan Belajar Siswa - Bimbel Kiddos Zone Bogor",
+    description:
+      "Lihat keseruan belajar, bermain edukatif, dan keceriaan para siswa di Bimbel Kiddos Zone Bogor.",
+    images: ["/og-image.jpg"],
   },
 };
 
 export default function GalleryPage() {
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: SITE_CONFIG.url,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Galeri Siswa",
+        item: `${SITE_CONFIG.url}/galeri`,
+      },
+    ],
+  };
+
   return (
     <div className="max-w-5xl mx-auto px-4 pt-6 md:pt-10 pb-16 min-h-[80vh]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <nav className="mb-4 text-sm text-gray-600" aria-label="Breadcrumb">
         <ol className="list-reset flex">
           <li>
-            <Link href="/" className="text-green-700 hover:underline">
+            <Link href="/" className="text-orange-600 hover:underline">
               Home
             </Link>
           </li>
@@ -47,22 +86,7 @@ export default function GalleryPage() {
         </p>
       </header>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        {GALLERY_LIST.map((item) => (
-          <div
-            key={item.id}
-            className="overflow-hidden rounded-lg shadow-md hover:scale-105 transition-transform duration-300 relative aspect-[3/2]"
-          >
-            <Image
-              src={item.img}
-              alt={`Dokumentasi belajar ${item.title} Bimbel Kiddos Zone Bogor`}
-              fill
-              className="object-cover rounded-lg"
-              sizes="(max-width: 768px) 50vw, 33vw"
-            />
-          </div>
-        ))}
-      </div>
+      <GalleryGrid />
     </div>
   );
 }

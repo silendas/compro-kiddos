@@ -1,24 +1,57 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+import { Baloo_2, Poppins } from "next/font/google";
 import Script from "next/script";
-import Navbar from "@comp/Navbar";
-import Footer from "@comp/Footer";
-import FlyingButton from "@comp/FlyingButton";
+import AppShell from "@comp/AppShell";
 import JsonLd from "@comp/JsonLd";
 import { AuthProvider } from "@lib/authContext";
 import { SITE_CONFIG } from "@data/siteConfig";
 import "@style/globals.css";
 
+const baloo2 = Baloo_2({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-baloo-2",
+  display: "swap",
+});
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-poppins",
+  display: "swap",
+});
+
+export const viewport: Viewport = {
+  themeColor: "#f59e0b",
+  width: "device-width",
+  initialScale: 1,
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_CONFIG.url),
   title: {
-    default: "Bimbel Kiddos Zone - Bimbel & Les Privat Terbaik di Bogor",
-    template: "%s | Bimbel Kiddos Zone",
+    default: "Bimbel Kiddos Zone Bogor - Les Calistung & Privat Terbaik di Bogor",
+    template: "%s | Bimbel Kiddos Zone Bogor",
   },
-  description: SITE_CONFIG.description,
+  description:
+    "Bimbel Kiddos Zone Bogor - Bimbingan belajar & les privat terbaik di Kota Bogor untuk jenjang PraCalis, Calistung anak TK/SD, Matematika, Bahasa Inggris, BTQ Al-Qur'an, dan les privat ke rumah.",
   keywords: SITE_CONFIG.keywords,
   authors: [{ name: SITE_CONFIG.name, url: SITE_CONFIG.url }],
   creator: SITE_CONFIG.name,
   publisher: SITE_CONFIG.name,
+  manifest: "/manifest.webmanifest",
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/assets/Logo_Kiddos.webp", type: "image/webp" },
+    ],
+    apple: "/assets/Logo_Kiddos.png",
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: SITE_CONFIG.name,
+  },
   formatDetection: {
     telephone: true,
     address: true,
@@ -26,6 +59,12 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: "/",
+  },
+  other: {
+    "geo.region": "ID-JB",
+    "geo.placename": "Kota Bogor",
+    "geo.position": "-6.582;106.815",
+    ICBM: "-6.582, 106.815",
   },
   robots: {
     index: true,
@@ -64,8 +103,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="id">
-      <head>
+    <html lang="id" className={`${poppins.variable} ${baloo2.variable}`}>
+      <body className="bg-white text-gray-900 antialiased selection:bg-amber-200 selection:text-orange-950">
         <JsonLd />
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-TN36DG67E8"
@@ -79,13 +118,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             gtag('config', 'G-TN36DG67E8');
           `}
         </Script>
-      </head>
-      <body className="font-poppins bg-white">
         <AuthProvider>
-          <Navbar />
-          <FlyingButton />
-          <main>{children}</main>
-          <Footer />
+          <AppShell>{children}</AppShell>
         </AuthProvider>
       </body>
     </html>

@@ -10,17 +10,23 @@ import {
 import { useRouter } from "next/navigation";
 import { auth } from "./firebase";
 
+export interface LoginResult {
+  success: boolean;
+  code?: string;
+  message?: string;
+}
+
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  login: (email: string, pass: string) => Promise<void>;
+  login: (email: string, pass: string) => Promise<LoginResult>;
   logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
-  login: async () => {},
+  login: async () => ({ success: false }),
   logout: async () => {},
 });
 
@@ -37,8 +43,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => unsubscribe();
   }, []);
 
-  const login = async (email: string, pass: string) => {
-    await signInWithEmailAndPassword(auth, email.trim(), pass);
+  const login = async (email: string, pass: string): Promise<LoginResult> => {
+    try {
+      await signInWithEmailAndPassword(auth, email.trim(), pass);
+      return { success: true };
+    } catch (err: unknown) {
+      const authErr = err as { code?: string; message?: string };
+      return {
+        success: false,
+        code: authErr?.code,
+        message: authErr?.message,
+      };
+    }
   };
 
   const logout = async () => {
@@ -73,7 +89,7 @@ export function ProtectedRoute({ children }: { children: ReactNode }) {
   if (loading) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center">
-        <div className="w-12 h-12 border-4 border-green-500 border-t-transparent rounded-full animate-spin mb-4" />
+        <div className="w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mb-4" />
         <p className="text-gray-600 font-medium">Memeriksa autentikasi...</p>
       </div>
     );

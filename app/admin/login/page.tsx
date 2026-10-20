@@ -4,9 +4,9 @@ import { useState, FormEvent, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FaLock, FaEnvelope, FaSignInAlt, FaArrowLeft } from "react-icons/fa";
+import { FaLock, FaEnvelope, FaSignInAlt, FaArrowLeft, FaCheck, FaTimes } from "react-icons/fa";
 
-import logo from "@asset/Logo_Kiddos.png";
+import logo from "@asset/Logo_Kiddos.webp";
 import { useAuth } from "@lib/authContext";
 
 export default function AdminLoginPage() {
@@ -17,6 +17,7 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [toast, setToast] = useState<{ text: string; type: "success" | "error" } | null>(null);
 
   useEffect(() => {
     if (user) {
@@ -24,40 +25,81 @@ export default function AdminLoginPage() {
     }
   }, [user, router]);
 
+  const showToast = (text: string, type: "success" | "error") => {
+    setToast({ text, type });
+    if (type === "error") {
+      setTimeout(() => setToast(null), 4500);
+    }
+  };
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
+    setToast(null);
 
     if (!email.trim() || !password) {
-      setError("Email dan password wajib diisi");
+      const msg = "Email dan kata sandi wajib diisi";
+      setError(msg);
+      showToast(msg, "error");
       return;
     }
 
     setSubmitting(true);
     try {
-      await login(email, password);
-      router.replace("/admin");
-    } catch (err: unknown) {
-      console.error("Login error:", err);
-      const authErr = err as { code?: string };
-      if (
-        authErr.code === "auth/invalid-credential" ||
-        authErr.code === "auth/user-not-found" ||
-        authErr.code === "auth/wrong-password"
-      ) {
-        setError("Email atau password yang Anda masukkan salah.");
-      } else if (authErr.code === "auth/too-many-requests") {
-        setError("Terlalu banyak percobaan gagal. Silakan coba beberapa saat lagi.");
+      const res = await login(email, password);
+
+      if (res.success) {
+        showToast("Berhasil masuk! Mengarahkan ke dashboard...", "success");
+        setTimeout(() => {
+          router.replace("/admin");
+        }, 1000);
       } else {
-        setError("Gagal masuk. Pastikan koneksi internet stabil atau akun terdaftar.");
+        let errMsg = "Gagal masuk. Silakan periksa kembali email dan kata sandi Anda.";
+
+        if (
+          res.code === "auth/invalid-credential" ||
+          res.code === "auth/user-not-found" ||
+          res.code === "auth/wrong-password"
+        ) {
+          errMsg = "Email atau kata sandi yang Anda masukkan salah.";
+        } else if (res.code === "auth/too-many-requests") {
+          errMsg = "Terlalu banyak percobaan gagal. Silakan tunggu beberapa saat lagi.";
+        } else if (res.code === "auth/invalid-email") {
+          errMsg = "Format email tidak valid.";
+        } else if (res.code === "auth/network-request-failed") {
+          errMsg = "Koneksi internet bermasalah. Silakan periksa jaringan Anda.";
+        }
+
+        setError(errMsg);
+        showToast(errMsg, "error");
+        setSubmitting(false);
       }
-    } finally {
+    } catch {
+      const errMsg = "Terjadi kesalahan saat masuk. Silakan coba lagi.";
+      setError(errMsg);
+      showToast(errMsg, "error");
       setSubmitting(false);
     }
   };
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center px-4 py-12 bg-gradient-to-br from-lime-50 via-teal-50 to-pink-50">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-gradient-to-br from-amber-50 via-orange-50 to-amber-50/30 relative">
+      {/* Toast Notification */}
+      {toast && (
+        <div className="fixed top-6 right-6 z-50 animate-bounce">
+          <div
+            className={`px-5 py-3 rounded-2xl shadow-xl text-sm font-bold flex items-center gap-2.5 transition-all ${
+              toast.type === "success"
+                ? "bg-emerald-600 text-white"
+                : "bg-red-600 text-white"
+            }`}
+          >
+            {toast.type === "success" ? <FaCheck className="text-base" /> : <FaTimes className="text-base" />}
+            <span>{toast.text}</span>
+          </div>
+        </div>
+      )}
+
       <div className="w-full max-w-md bg-white rounded-3xl shadow-xl border border-gray-100 p-8 md:p-10">
         <div className="text-center mb-8">
           <Link href="/" className="inline-block mb-3 hover:scale-105 transition">
@@ -101,7 +143,7 @@ export default function AdminLoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="admin@kiddoszone.com"
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent text-gray-800 text-sm transition"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-gray-800 text-sm transition"
               />
             </div>
           </div>
@@ -122,7 +164,7 @@ export default function AdminLoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent text-gray-800 text-sm transition"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-gray-800 text-sm transition"
               />
             </div>
           </div>
@@ -130,7 +172,7 @@ export default function AdminLoginPage() {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full mt-2 bg-gradient-to-r from-teal-500 to-green-600 hover:from-teal-600 hover:to-green-700 text-white font-bold py-3 px-4 rounded-xl shadow-md hover:shadow-lg transition duration-200 flex items-center justify-center gap-2 text-base disabled:opacity-60 disabled:cursor-not-allowed"
+            className="w-full mt-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold py-3 px-4 rounded-xl shadow-md hover:shadow-lg transition duration-200 flex items-center justify-center gap-2 text-base disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {submitting ? (
               <>

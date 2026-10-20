@@ -67,8 +67,8 @@ export default function HomeArticles() {
               )}
             </span>
             <Link
-              href={`/artikel/${article.id}`}
-              className="text-green-700 hover:text-green-800 font-semibold"
+              href={`/artikel/${article.slug || article.id}`}
+              className="text-orange-600 hover:text-orange-700 font-semibold"
             >
               Baca Selengkapnya &rarr;
             </Link>
