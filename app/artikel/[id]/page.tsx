@@ -10,11 +10,15 @@ interface PageProps {
 export async function generateStaticParams(): Promise<{ id: string }[]> {
   try {
     const ids = await getAllArticleIds();
-    if (ids.length > 0) return ids;
+    const result: { id: string }[] = [...ids];
+    if (!result.some((item) => item.id === "default")) {
+      result.push({ id: "default" });
+    }
+    return result;
   } catch (e) {
     console.warn("generateStaticParams offline:", e);
+    return [{ id: "default" }];
   }
-  return [{ id: "default" }];
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {

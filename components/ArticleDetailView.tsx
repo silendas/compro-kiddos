@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams, usePathname } from "next/navigation";
 import Link from "next/link";
 import { FiArrowLeft } from "react-icons/fi";
 import { getArticleById, Article } from "@lib/articleService";
@@ -14,21 +14,50 @@ export default function ArticleDetailView({
   initialArticle?: Article | null;
 }) {
   const router = useRouter();
-  const [article, setArticle] = useState<Article | null>(initialArticle || null);
-  const [loading, setLoading] = useState(!initialArticle);
+  const params = useParams();
+  const pathname = usePathname();
+
+  // Ambil slug/id dari URL browser jika prop id adalah "default" (misal: saat fallback SPA di Cloudflare)
+  const paramSlug = Array.isArray(params?.id)
+    ? params.id[0]
+    : (params?.id as string | undefined);
+
+  const pathSlug = pathname ? pathname.replace(/\/$/, "").split("/").pop() : "";
+
+  const effectiveId =
+    id && id !== "default"
+      ? id
+      : paramSlug && paramSlug !== "default"
+      ? paramSlug
+      : pathSlug && pathSlug !== "default" && pathSlug !== "artikel"
+      ? pathSlug
+      : id;
+
+  const hasValidInitial =
+    Boolean(initialArticle) &&
+    initialArticle?.slug !== "default" &&
+    initialArticle?.id !== "default" &&
+    (initialArticle?.slug === effectiveId || initialArticle?.id === effectiveId || id !== "default");
+
+  const [article, setArticle] = useState<Article | null>(
+    hasValidInitial ? initialArticle || null : null
+  );
+  const [loading, setLoading] = useState(!hasValidInitial);
 
   useEffect(() => {
-    if (initialArticle) {
+    if (hasValidInitial && initialArticle) {
       setArticle(initialArticle);
       setLoading(false);
       return;
     }
-    if (!id) {
+
+    if (!effectiveId || effectiveId === "default") {
       setLoading(false);
       return;
     }
+
     setLoading(true);
-    getArticleById(id)
+    getArticleById(effectiveId)
       .then((data) => {
         setArticle(data);
       })
@@ -38,7 +67,7 @@ export default function ArticleDetailView({
       .finally(() => {
         setLoading(false);
       });
-  }, [id, initialArticle]);
+  }, [effectiveId, hasValidInitial, initialArticle]);
 
   if (loading) {
     return (
