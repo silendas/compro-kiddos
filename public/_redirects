@@ -1,2 +1,0 @@
-# Cloudflare Pages URL Rewrites for Dynamic Routes
-/artikel/* /artikel/default/index.html 200
