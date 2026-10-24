@@ -17,7 +17,7 @@ export default function JsonLd() {
         logo: `${SITE_CONFIG.url}/assets/Logo_Kiddos.png`,
         image: `${SITE_CONFIG.url}/og-image.jpg`,
         description: SITE_CONFIG.description,
-        telephone: "+6285156732275",
+        telephone: "+6285156722275",
         priceRange: "$$",
         currenciesAccepted: "IDR",
         paymentAccepted: "Cash, Transfer Bank",
@@ -220,7 +220,7 @@ export default function JsonLd() {
             name: "Di mana saja titik lokasi cabang Bimbel Kiddos Zone di wilayah Bogor?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Kami memiliki cabang strategis di Bogor: Cabang Kenari Pusat (Cimahpar, Bogor Utara), Cabang Poren (Ciluar, Bogor Utara), Cabang Alamanda (Sukaraja, Kab. Bogor), dan Cabang Petir Cimahpar.",
+              text: "Bimbel Kiddos Zone saat ini memiliki 3 cabang resmi di wilayah Bogor: Cabang Pondok Aren (Pusat - Jl. Bali No. 158, Ciluar, Bogor Utara), Cabang Taman Kenari (Office - Blok D6 No. 3, Cimahpar, Bogor Utara), dan Cabang Calistung Teras Cendekia (Perumahan Hollywood Blok A5 No. 15, Tanah Baru, Bogor Utara).",
             },
           },
           {
@@ -252,7 +252,7 @@ export default function JsonLd() {
             name: "Bagaimana cara pendaftaran dan apakah ada konsultasi gratis?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Pendaftaran dan konsultasi gratis dapat dilakukan melalui WhatsApp resmi di 0851-5673-2275 atau dengan berkunjung langsung ke cabang terdekat di wilayah Bogor.",
+              text: "Pendaftaran dan konsultasi gratis dapat dilakukan melalui WhatsApp resmi di 0851 5672 2275 atau dengan berkunjung langsung ke cabang terdekat di wilayah Bogor.",
             },
           },
         ],

@@ -87,8 +87,8 @@ export default function KelolaGuruPage() {
 
     setCompressing(true);
     try {
-      // Kompres foto ke resolusi 400x400 px kualitas 0.82
-      const compressedBase64 = await compressImage(file, 400, 400, 0.82);
+      // Kompres foto ke resolusi portrait ramah avatar (500x650 px, WebP kualitas 0.85)
+      const compressedBase64 = await compressImage(file, 500, 650, 0.85);
       setImg(compressedBase64);
       showToast("Foto guru berhasil dikompres & siap disimpan!", "success");
     } catch (err: unknown) {
@@ -175,11 +175,11 @@ export default function KelolaGuruPage() {
 
           <div className="flex items-center gap-2">
             <Link
-              href="/tentang-kami#informasi-pengajar"
+              href="/guru"
               target="_blank"
               className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-orange-800 bg-amber-100/70 hover:bg-amber-200/80 px-3 py-1.5 rounded-lg border border-amber-300 transition"
             >
-              <FaExternalLinkAlt className="text-xs" /> Lihat di Web
+              <FaExternalLinkAlt className="text-xs" /> Lihat Halaman Guru
             </Link>
             <button
               onClick={() => logout()}
@@ -235,11 +235,11 @@ export default function KelolaGuruPage() {
             <div className="bg-gray-50 border border-gray-200 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <div className="relative shrink-0">
                 {img ? (
-                  <div className="w-24 h-24 rounded-2xl overflow-hidden border-2 border-orange-300 shadow-sm relative group">
+                  <div className="w-24 h-28 rounded-2xl overflow-hidden border-2 border-orange-300 shadow-sm relative group bg-amber-50">
                     <img
                       src={img}
                       alt="Preview Foto Guru"
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover object-top"
                     />
                     <button
                       type="button"
@@ -251,9 +251,9 @@ export default function KelolaGuruPage() {
                     </button>
                   </div>
                 ) : (
-                  <div className="w-24 h-24 rounded-2xl bg-amber-100 border-2 border-dashed border-amber-300 flex flex-col items-center justify-center text-orange-600">
+                  <div className="w-24 h-28 rounded-2xl bg-amber-100 border-2 border-dashed border-amber-300 flex flex-col items-center justify-center text-orange-600">
                     <FaChalkboardTeacher className="text-3xl" />
-                    <span className="text-[10px] font-bold mt-1">Belum Ada Foto</span>
+                    <span className="text-[10px] font-bold mt-1 text-center px-1">Belum Ada Foto</span>
                   </div>
                 )}
               </div>
@@ -262,8 +262,8 @@ export default function KelolaGuruPage() {
                 <p className="text-sm font-bold text-gray-800">
                   Foto Profil Pengajar / Guru (Opsional)
                 </p>
-                <p className="text-xs text-gray-500 mt-0.5">
-                  Foto akan <strong>otomatis dikompres</strong> menjadi ukuran sangat ringan (~30-50 KB). Format yang disarankan: JPG, PNG, atau WebP.
+                <p className="text-xs text-gray-500 mt-0.5 leading-relaxed">
+                  Foto otomatis dikompres ke WebP ringan (~30-50 KB). <strong>Tips:</strong> Gunakan foto portrait vertikal dengan wajah/kepala di sepertiga atas. Tampilan web telah dioptimalkan dengan <em>object-top</em> agar dahi &amp; kepala guru tidak terpotong.
                 </p>
 
                 <div className="mt-3 flex flex-wrap items-center gap-2">
@@ -317,7 +317,7 @@ export default function KelolaGuruPage() {
 
               <div>
                 <label className="block text-xs font-bold text-gray-700 mb-1" htmlFor="subject">
-                  Mata Pelajaran / Program Pengajar *
+                  Mata Pelajaran / Bidang Pengajar *
                 </label>
                 <input
                   id="subject"
@@ -415,7 +415,7 @@ export default function KelolaGuruPage() {
                           <img
                             src={item.img}
                             alt={item.name}
-                            className="w-12 h-12 rounded-xl object-cover border border-amber-200 shadow-sm shrink-0"
+                            className="w-12 h-12 rounded-xl object-cover object-top border border-amber-200 shadow-sm shrink-0"
                           />
                         ) : (
                           <div className="w-12 h-12 rounded-xl bg-amber-100 text-orange-700 font-bold text-sm flex items-center justify-center shrink-0">

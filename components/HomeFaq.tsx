@@ -18,7 +18,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Di mana saja titik lokasi cabang Bimbel Kiddos Zone di wilayah Bogor?",
     answer:
-      "Kami memiliki beberapa cabang strategis di Kota dan Kabupaten Bogor, di antaranya: Cabang Kenari Pusat (Cimahpar, Bogor Utara), Cabang Poren (Ciluar, Bogor Utara), Cabang Alamanda (Sukaraja, Kab. Bogor), dan Cabang Petir Cimahpar. Semua lokasi mudah dijangkau dan ramah anak.",
+      "Bimbel Kiddos Zone saat ini memiliki 3 cabang resmi di wilayah Bogor: Cabang Pondok Aren (Pusat - Jl. Bali No. 158, Ciluar, Bogor Utara), Cabang Taman Kenari (Office - Blok D6 No. 3, Cimahpar, Bogor Utara), dan Cabang Calistung Teras Cendekia (Perumahan Hollywood Blok A5 No. 15, Tanah Baru, Bogor Utara). Semua lokasi mudah dijangkau dan ramah anak.",
   },
   {
     question: "Apakah tersedia les privat guru datang langsung ke rumah di Bogor?",
@@ -38,7 +38,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Bagaimana cara pendaftaran dan apakah ada konsultasi gratis?",
     answer:
-      "Pendaftaran sangat mudah! Anda dapat berkonsultasi gratis terlebih dahulu mengenai kebutuhan ananda melalui WhatsApp resmi kami di 0851-5673-2275. Tim kami akan dengan senang hati membantu memilihkan program terbaik.",
+      "Pendaftaran sangat mudah! Anda dapat berkonsultasi gratis terlebih dahulu mengenai kebutuhan ananda melalui WhatsApp resmi kami di 0851 5672 2275. Tim kami akan dengan senang hati membantu memilihkan program terbaik.",
   },
 ];
 

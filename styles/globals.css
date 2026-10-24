@@ -48,3 +48,20 @@ section[aria-label="Banner Utama"] .swiper-pagination-bullet-active {
   width: 22px !important;
   border-radius: 9999px !important;
 }
+
+/* Teachers slider pagination (warm orange dots) */
+.teacher-swiper .swiper-pagination-bullet,
+#informasi-pengajar .swiper-pagination-bullet {
+  background-color: #f97316 !important;
+  opacity: 0.35;
+  transition: all 0.3s ease;
+}
+
+.teacher-swiper .swiper-pagination-bullet-active,
+#informasi-pengajar .swiper-pagination-bullet-active {
+  background-color: #ea580c !important;
+  opacity: 1;
+  width: 26px !important;
+  border-radius: 9999px !important;
+}
+

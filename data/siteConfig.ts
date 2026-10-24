@@ -30,8 +30,8 @@ export const SITE_CONFIG = {
     "biaya bimbel calistung bogor",
   ],
   contact: {
-    phone: "085-15673-2275",
-    whatsappNumber: "6285156732275",
+    phone: "0851 5672 2275",
+    whatsappNumber: "6285156722275",
     whatsappMessage:
       "Halo, saya tertarik untuk mendaftar di Bimbel Kiddos Zone! Bisa dibantu?",
     address: {
@@ -50,31 +50,25 @@ export const SITE_CONFIG = {
     instagram: "https://www.instagram.com/bimbelkiddoszone",
     facebook: "https://www.facebook.com/share/18e1n5uo3y/",
     tiktok: "https://www.tiktok.com/@bimbelkiddoszone1",
-    whatsapp: "https://wa.me/6285156732275",
+    whatsapp: "https://wa.me/6285156722275",
   },
   branches: [
     {
-      title: "Bimbel KIDDOS Zone Kenari (Pusat)",
+      title: "Bimbel KIDDOS ZONE Taman Kenari (Office)",
       address:
-        "Perumahan Taman Kenari, Blok D6 No 3, Cimahpar, Kec. Bogor Utara, Kota Bogor, Jawa Barat 16155",
+        "Perumahan Taman Kenari Blok D6 no3. Cimahpar, Bogor Utara Jawa Barat",
+      isHeadquarters: false,
+    },
+    {
+      title: "Bimbel KIDDOS ZONE Pondok Aren",
+      address:
+        "Perumahan Pondok Aren Jl Bali No 158, Ciluar, Bogor Utara Jawa Barat",
       isHeadquarters: true,
     },
     {
-      title: "Bimbel KIDDOS Zone Poren",
+      title: "Calistung TERAS CENDEKIA",
       address:
-        "Perumahan Pondok Aren, Jl. Bali No.151, Ciluar, Kec. Bogor Utara, Kota Bogor, Jawa Barat",
-      isHeadquarters: false,
-    },
-    {
-      title: "Bimbel KIDDOS Zone Alamanda",
-      address:
-        "Perumahan Mega Sentul Alamanda, Jl Adhenium 2, Blok R.15, Kec. Sukaraja, Kabupaten Bogor, Jawa Barat",
-      isHeadquarters: false,
-    },
-    {
-      title: "Bimbel KIDDOS Zone Cimahpar",
-      address:
-        "Kampung Petir RT 01 RW 04, Kel. Cimahpar, Kec. Bogor Utara, Kota Bogor, Jawa Barat",
+        "Perumahan Hollywood Blok A5 no 15, Tanah Baru, Bogor Utara Jawa Barat",
       isHeadquarters: false,
     },
   ],

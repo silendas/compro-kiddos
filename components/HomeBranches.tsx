@@ -80,12 +80,23 @@ export default function HomeBranches() {
               <div className="pt-2 border-t border-amber-100 flex flex-wrap items-center gap-3 text-xs">
                 {branch.phone && (
                   <a
-                    href={`https://wa.me/${branch.phone.replace(/[^0-9]/g, "")}`}
+                    href={`https://wa.me/${(() => {
+                      let p = branch.phone.replace("5673", "5672").replace(/[^0-9]/g, "");
+                      if (p.startsWith("0")) p = "62" + p.slice(1);
+                      return p;
+                    })()}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1 text-orange-700 font-semibold hover:underline"
                   >
-                    <FaPhoneAlt className="text-orange-500 text-[10px]" /> {branch.phone}
+                    <FaPhoneAlt className="text-orange-500 text-[10px]" />{" "}
+                    {(() => {
+                      const d = branch.phone.replace("5673", "5672").replace(/[^0-9]/g, "");
+                      if (d.length === 12 && d.startsWith("08")) {
+                        return `${d.slice(0, 4)} ${d.slice(4, 8)} ${d.slice(8)}`;
+                      }
+                      return branch.phone.replace("5673", "5672");
+                    })()}
                   </a>
                 )}
                 {branch.mapsUrl && (

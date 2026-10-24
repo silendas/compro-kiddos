@@ -9,7 +9,11 @@ export default function AdminGuard({ children }: { children: React.ReactNode }) 
   const router = useRouter();
   const pathname = usePathname();
 
-  const isLoginPage = pathname === "/admin/login";
+  // Tangani pathname dengan atau tanpa trailing slash, serta query params
+  const normalizedPath = (pathname || "").replace(/\/+$/, "");
+  const isLoginPage =
+    normalizedPath === "/admin/login" ||
+    normalizedPath.startsWith("/admin/login");
 
   useEffect(() => {
     if (!loading && !user && !isLoginPage) {
@@ -25,18 +29,29 @@ export default function AdminGuard({ children }: { children: React.ReactNode }) 
   // Tampilkan loading saat sedang memeriksa status login Firebase
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
-        <div className="w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mb-4" />
-        <p className="text-gray-600 font-medium text-sm">Memeriksa izin akses admin...</p>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4">
+        <div className="w-10 h-10 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mb-4" />
+        <p className="text-gray-600 font-medium text-sm">
+          Memeriksa izin akses admin...
+        </p>
       </div>
     );
   }
 
-  // Jika belum login dan bukan halaman login, tahan render agar tidak bocor
+  // Jika belum login dan bukan halaman login, arahkan ke login
   if (!user) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
-        <p className="text-gray-500 text-sm">Akses terbatas. Mengarahkan ke halaman login...</p>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4 text-center">
+        <div className="w-10 h-10 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mb-4" />
+        <p className="text-gray-600 font-medium text-sm">
+          Akses terbatas. Mengarahkan ke halaman login...
+        </p>
+        <a
+          href="/admin/login"
+          className="mt-3 text-xs text-orange-600 font-bold hover:underline"
+        >
+          Klik di sini jika halaman tidak berpindah otomatis
+        </a>
       </div>
     );
   }
