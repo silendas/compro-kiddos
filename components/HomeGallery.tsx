@@ -3,13 +3,19 @@
 import { useEffect, useState } from "react";
 import { getGallery, GalleryItem } from "@lib/galleryService";
 
-export default function HomeGallery() {
-  const [gallery, setGallery] = useState<GalleryItem[]>([]);
-  const [loading, setLoading] = useState(true);
+interface HomeGalleryProps {
+  initialGallery?: GalleryItem[];
+}
+
+export default function HomeGallery({ initialGallery }: HomeGalleryProps) {
+  const [gallery, setGallery] = useState<GalleryItem[]>(() =>
+    initialGallery ? initialGallery.slice(0, 4) : []
+  );
+  const [loading, setLoading] = useState(!initialGallery || initialGallery.length === 0);
 
   useEffect(() => {
-    getGallery()
-      .then((data) => setGallery(data.slice(0, 4)))
+    getGallery(4)
+      .then((data) => setGallery(data))
       .catch((err) => console.warn("Gagal memuat galeri beranda:", err))
       .finally(() => setLoading(false));
   }, []);

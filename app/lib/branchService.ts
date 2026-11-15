@@ -5,8 +5,6 @@ import {
   addDoc,
   updateDoc,
   deleteDoc,
-  query,
-  orderBy,
   serverTimestamp,
 } from "firebase/firestore";
 import { db } from "./firebase";
@@ -26,41 +24,49 @@ export interface BranchItem {
 
 const COLLECTION_NAME = "branches";
 
+let branchCache: { data: BranchItem[]; timestamp: number } | null = null;
+const CACHE_TTL_MS = 2 * 60 * 1000;
+
+export function invalidateBranchCache() {
+  branchCache = null;
+}
+
 export async function getBranches(): Promise<BranchItem[]> {
+  const now = Date.now();
+  if (branchCache && now - branchCache.timestamp < CACHE_TTL_MS) {
+    return branchCache.data;
+  }
+
   try {
     const colRef = collection(db, COLLECTION_NAME);
-    const q = query(colRef, orderBy("order", "asc"));
-    const snapshot = await getDocs(q);
+    const snapshot = await getDocs(colRef);
 
     if (snapshot.empty) {
-      // Fallback query tanpa orderBy jika ada dokumen yang belum memiliki field order
-      const fallbackSnap = await getDocs(colRef);
-      if (fallbackSnap.empty) {
-        return [];
-      }
-      return fallbackSnap.docs.map((docSnap) => ({
-        id: docSnap.id,
-        ...(docSnap.data() as Omit<BranchItem, "id">),
-      }));
-    }
-
-    return snapshot.docs.map((docSnap) => ({
-      id: docSnap.id,
-      ...(docSnap.data() as Omit<BranchItem, "id">),
-    }));
-  } catch (error) {
-    console.error("Gagal mengambil data cabang:", error);
-    // Jika offline atau error, coba ambil tanpa filter
-    try {
-      const colRef = collection(db, COLLECTION_NAME);
-      const snapshot = await getDocs(colRef);
-      return snapshot.docs.map((docSnap) => ({
-        id: docSnap.id,
-        ...(docSnap.data() as Omit<BranchItem, "id">),
-      }));
-    } catch {
       return [];
     }
+
+    const items: BranchItem[] = snapshot.docs.map((docSnap) => {
+      const data = docSnap.data();
+      return {
+        id: docSnap.id,
+        title: data.title || "",
+        address: data.address || "",
+        isHeadquarters: !!data.isHeadquarters,
+        mapsUrl: data.mapsUrl || "",
+        phone: data.phone || "",
+        order: Number(data.order) || 0,
+        createdAt: data.createdAt?.toDate ? data.createdAt.toDate().toISOString() : null,
+        updatedAt: data.updatedAt?.toDate ? data.updatedAt.toDate().toISOString() : null,
+      };
+    });
+
+    items.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
+    branchCache = { data: items, timestamp: now };
+    return items;
+  } catch (error) {
+    console.error("Gagal mengambil data cabang:", error);
+    return branchCache ? branchCache.data : [];
   }
 }
 
@@ -75,6 +81,7 @@ export async function addBranch(
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
   });
+  invalidateBranchCache();
   return docRef.id;
 }
 
@@ -87,11 +94,13 @@ export async function updateBranch(
     ...data,
     updatedAt: serverTimestamp(),
   });
+  invalidateBranchCache();
 }
 
 export async function deleteBranch(id: string): Promise<void> {
   const docRef = doc(db, COLLECTION_NAME, id);
   await deleteDoc(docRef);
+  invalidateBranchCache();
 }
 
 export async function seedInitialBranches(): Promise<number> {
@@ -107,5 +116,6 @@ export async function seedInitialBranches(): Promise<number> {
     });
     count++;
   }
+  invalidateBranchCache();
   return count;
 }

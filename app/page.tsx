@@ -18,7 +18,23 @@ import HomeBranches from "@comp/HomeBranches";
 import HomeFaq from "@comp/HomeFaq";
 import LearningMethodSection from "@comp/LearningMethodSection";
 
-export default function HomePage() {
+import { getPrograms } from "@lib/programService";
+import { getTeachers } from "@lib/teacherService";
+import { getArticles } from "@lib/articleService";
+import { getGallery } from "@lib/galleryService";
+import { getBranches } from "@lib/branchService";
+import { getTestimonials } from "@lib/testimonialService";
+
+export default async function HomePage() {
+  const [teachers, programs, gallery, testimonials, articles, branches] = await Promise.all([
+    getTeachers(),
+    getPrograms(),
+    getGallery(4),
+    getTestimonials(true),
+    getArticles(3),
+    getBranches(),
+  ]);
+
   return (
     <div id="beranda" className="flex flex-col items-center text-center bg-white scroll-mt-24">
       {/* Hero Swiper Slider */}
@@ -130,7 +146,7 @@ export default function HomePage() {
           Guru-guru sabar, ramah, dan berpengalaman yang siap mendampingi proses
           belajar anak agar lebih mudah memahami setiap materi pelajaran.
         </p>
-        <HomeTeachers />
+        <HomeTeachers initialTeachers={teachers} />
       </section>
 
       {/* Program Les Section */}
@@ -175,7 +191,7 @@ export default function HomePage() {
         </div>
 
         <div className="max-w-7xl mx-auto px-6 md:px-10 mt-8">
-          <HomePrograms />
+          <HomePrograms initialPrograms={programs} />
         </div>
       </section>
 
@@ -203,11 +219,11 @@ export default function HomePage() {
           </Link>
         </div>
 
-        <HomeGallery />
+        <HomeGallery initialGallery={gallery} />
       </section>
 
       {/* Cerita & Testimoni dari Orang Tua & Siswa */}
-      <TestimonialsSection />
+      <TestimonialsSection initialTestimonials={testimonials} />
 
       {/* Artikel Terbaru Section */}
       <section
@@ -232,7 +248,7 @@ export default function HomePage() {
           </Link>
         </div>
 
-        <HomeArticles />
+        <HomeArticles initialArticles={articles} />
       </section>
 
       {/* Lokasi Cabang Section (Local SEO) */}
@@ -253,7 +269,7 @@ export default function HomePage() {
             agar lebih dekat dan mudah dijangkau oleh buah hati Anda.
           </p>
 
-          <HomeBranches />
+          <HomeBranches initialBranches={branches} />
         </div>
       </section>
 

@@ -5,9 +5,13 @@ import { FaMapMarkerAlt, FaPhoneAlt, FaStar, FaExternalLinkAlt } from "react-ico
 import { getBranches, BranchItem } from "@lib/branchService";
 import { SITE_CONFIG } from "@data/siteConfig";
 
-export default function HomeBranches() {
-  const [branches, setBranches] = useState<BranchItem[]>([]);
-  const [loading, setLoading] = useState(true);
+interface HomeBranchesProps {
+  initialBranches?: BranchItem[];
+}
+
+export default function HomeBranches({ initialBranches }: HomeBranchesProps) {
+  const [branches, setBranches] = useState<BranchItem[]>(initialBranches || []);
+  const [loading, setLoading] = useState(!initialBranches || initialBranches.length === 0);
 
   useEffect(() => {
     getBranches()

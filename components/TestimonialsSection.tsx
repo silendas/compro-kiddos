@@ -12,12 +12,16 @@ import { SITE_CONFIG } from "@data/siteConfig";
 import "swiper/css";
 import "swiper/css/pagination";
 
-export default function TestimonialsSection() {
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-  const [loading, setLoading] = useState(true);
+interface TestimonialsSectionProps {
+  initialTestimonials?: Testimonial[];
+}
+
+export default function TestimonialsSection({ initialTestimonials }: TestimonialsSectionProps) {
+  const [testimonials, setTestimonials] = useState<Testimonial[]>(initialTestimonials || []);
+  const [loading, setLoading] = useState(!initialTestimonials || initialTestimonials.length === 0);
 
   useEffect(() => {
-    getTestimonials(false)
+    getTestimonials(true)
       .then((data) => {
         if (data && data.length > 0) {
           setTestimonials(data);

@@ -94,10 +94,22 @@ export function sanitizeArticle(docId: string, data: Record<string, unknown>): A
   };
 }
 
+let articleCache: { data: Article[]; timestamp: number } | null = null;
+const CACHE_TTL_MS = 2 * 60 * 1000;
+
+export function invalidateArticleCache() {
+  articleCache = null;
+}
+
 /**
- * Mengambil daftar artikel dari Firestore
+ * Mengambil daftar artikel dari Firestore dengan in-memory cache
  */
 export async function getArticles(limitCount?: number): Promise<Article[]> {
+  const now = Date.now();
+  if (articleCache && now - articleCache.timestamp < CACHE_TTL_MS) {
+    return limitCount ? articleCache.data.slice(0, limitCount) : articleCache.data;
+  }
+
   try {
     const artikelRef = collection(db, "artikel");
     const q = limitCount
@@ -111,10 +123,14 @@ export async function getArticles(limitCount?: number): Promise<Article[]> {
       articles.push(sanitizeArticle(docSnap.id, docSnap.data() as Record<string, unknown>));
     });
 
+    if (!limitCount) {
+      articleCache = { data: articles, timestamp: now };
+    }
+
     return articles;
   } catch (error) {
     console.error("Error mengambil artikel dari Firestore:", error);
-    return [];
+    return articleCache ? (limitCount ? articleCache.data.slice(0, limitCount) : articleCache.data) : [];
   }
 }
 
@@ -198,6 +214,7 @@ export async function addArticle(
     createdAt: Timestamp.fromDate(new Date()),
   };
   const docRef = await addDoc(collection(db, "artikel"), newArticle);
+  invalidateArticleCache();
   return docRef.id;
 }
 
@@ -206,6 +223,7 @@ export async function addArticle(
  */
 export async function deleteArticle(id: string): Promise<void> {
   await deleteDoc(doc(db, "artikel", id));
+  invalidateArticleCache();
 }
 
 /**

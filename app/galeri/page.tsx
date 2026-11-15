@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import GalleryGrid from "@comp/GalleryGrid";
+import { getGallery } from "@lib/galleryService";
 
 import { SITE_CONFIG } from "@data/siteConfig";
 
@@ -35,7 +36,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function GalleryPage() {
+export default async function GalleryPage() {
+  const gallery = await getGallery();
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -86,7 +88,7 @@ export default function GalleryPage() {
         </p>
       </header>
 
-      <GalleryGrid />
+      <GalleryGrid initialGallery={gallery} />
     </div>
   );
 }

@@ -6,8 +6,6 @@ import {
   updateDoc,
   deleteDoc,
   serverTimestamp,
-  query,
-  orderBy,
 } from "firebase/firestore";
 import { db } from "./firebase";
 
@@ -25,7 +23,14 @@ export interface Testimonial {
 
 const COLLECTION_NAME = "testimonials";
 
-// Contoh data bawaan untuk seed awal jika dibutuhkan
+let testimonialCache: { data: Testimonial[]; timestamp: number } | null = null;
+const CACHE_TTL_MS = 2 * 60 * 1000;
+
+export function invalidateTestimonialCache() {
+  testimonialCache = null;
+}
+
+// Data bawaan untuk fallback tampilan jika database belum diisi
 const DEFAULT_TESTIMONIALS_SEED: Omit<Testimonial, "id" | "createdAt">[] = [
   {
     name: "Ibu Dini",
@@ -78,51 +83,60 @@ const DEFAULT_TESTIMONIALS_SEED: Omit<Testimonial, "id" | "createdAt">[] = [
 ];
 
 /**
- * Mengambil semua review murni dari koleksi Firestore.
- * Mengembalikan array kosong jika belum ada dokumen di Firestore.
+ * Mengambil review dari Firestore dengan in-memory cache dan fallback
  */
-export async function getTestimonials(allowFallback: boolean = false): Promise<Testimonial[]> {
+export async function getTestimonials(allowFallback: boolean = true): Promise<Testimonial[]> {
+  const now = Date.now();
+  if (testimonialCache && now - testimonialCache.timestamp < CACHE_TTL_MS) {
+    if (testimonialCache.data.length > 0) return testimonialCache.data;
+    if (allowFallback) {
+      return DEFAULT_TESTIMONIALS_SEED.map((item, idx) => ({ ...item, id: String(idx + 1) }));
+    }
+    return [];
+  }
+
   try {
-    const q = query(collection(db, COLLECTION_NAME), orderBy("createdAt", "desc"));
-    const snapshot = await getDocs(q);
+    const snapshot = await getDocs(collection(db, COLLECTION_NAME));
 
     if (snapshot.empty) {
-      // Coba tanpa orderBy jika ada dokumen tanpa createdAt
-      const fallbackSnap = await getDocs(collection(db, COLLECTION_NAME));
-      if (!fallbackSnap.empty) {
-        return fallbackSnap.docs.map((d) => ({
-          id: d.id,
-          name: d.data().name || "Orang Tua Siswa",
-          role: d.data().role || "Orang Tua Siswa",
-          content: d.data().content || "",
-          rating: Number(d.data().rating) || 5,
-          program: d.data().program || "",
-          avatar: d.data().avatar || "",
-          avatarBg: d.data().avatarBg || "from-pink-400 to-rose-400",
-          createdAt: d.data().createdAt?.toDate ? d.data().createdAt.toDate().toISOString() : null,
-        }));
-      }
-      return allowFallback
+      const fallbackData = allowFallback
         ? DEFAULT_TESTIMONIALS_SEED.map((item, idx) => ({ ...item, id: String(idx + 1) }))
         : [];
+      return fallbackData;
     }
 
-    return snapshot.docs.map((d) => ({
-      id: d.id,
-      name: d.data().name || "Orang Tua Siswa",
-      role: d.data().role || "Orang Tua Siswa",
-      content: d.data().content || "",
-      rating: Number(d.data().rating) || 5,
-      program: d.data().program || "",
-      avatar: d.data().avatar || "",
-      avatarBg: d.data().avatarBg || "from-pink-400 to-rose-400",
-      createdAt: d.data().createdAt?.toDate ? d.data().createdAt.toDate().toISOString() : null,
-    }));
+    const items: Testimonial[] = snapshot.docs.map((d) => {
+      const data = d.data();
+      return {
+        id: d.id,
+        name: data.name || "Orang Tua Siswa",
+        role: data.role || "Orang Tua Siswa",
+        content: data.content || "",
+        rating: Number(data.rating) || 5,
+        program: data.program || "",
+        avatar: data.avatar || "",
+        avatarBg: data.avatarBg || "from-pink-400 to-rose-400",
+        createdAt: data.createdAt?.toDate ? data.createdAt.toDate().toISOString() : null,
+      };
+    });
+
+    items.sort((a, b) => {
+      if (a.createdAt && b.createdAt) {
+        return String(b.createdAt).localeCompare(String(a.createdAt));
+      }
+      if (a.createdAt) return -1;
+      if (b.createdAt) return 1;
+      return 0;
+    });
+
+    testimonialCache = { data: items, timestamp: now };
+    return items;
   } catch (error) {
     console.warn("Firestore testimonials offline/unavailable:", error);
-    return allowFallback
-      ? DEFAULT_TESTIMONIALS_SEED.map((item, idx) => ({ ...item, id: String(idx + 1) }))
-      : [];
+    if (allowFallback) {
+      return DEFAULT_TESTIMONIALS_SEED.map((item, idx) => ({ ...item, id: String(idx + 1) }))
+    }
+    return [];
   }
 }
 
@@ -142,6 +156,7 @@ export async function addTestimonial(
     avatar: data.avatar || "",
     createdAt: serverTimestamp(),
   });
+  invalidateTestimonialCache();
   return docRef.id;
 }
 
@@ -157,6 +172,7 @@ export async function updateTestimonial(
     ...data,
     updatedAt: serverTimestamp(),
   });
+  invalidateTestimonialCache();
 }
 
 /**
@@ -165,6 +181,7 @@ export async function updateTestimonial(
 export async function deleteTestimonial(id: string): Promise<void> {
   const docRef = doc(db, COLLECTION_NAME, id);
   await deleteDoc(docRef);
+  invalidateTestimonialCache();
 }
 
 /**
@@ -184,5 +201,6 @@ export async function seedInitialTestimonials(): Promise<number> {
     });
     count++;
   }
+  invalidateTestimonialCache();
   return count;
 }

@@ -6,8 +6,6 @@ import {
   updateDoc,
   deleteDoc,
   serverTimestamp,
-  query,
-  orderBy,
 } from "firebase/firestore";
 import { db } from "./firebase";
 
@@ -21,6 +19,13 @@ export interface Program {
 }
 
 const COLLECTION_NAME = "programs";
+
+let programCache: { data: Program[]; timestamp: number } | null = null;
+const CACHE_TTL_MS = 2 * 60 * 1000; // 2 menit in-memory cache
+
+export function invalidateProgramCache() {
+  programCache = null;
+}
 
 // Program bawaan standar jika admin ingin menyalin kurikulum awal
 const DEFAULT_PROGRAMS: Omit<Program, "id" | "createdAt">[] = [
@@ -57,39 +62,47 @@ const DEFAULT_PROGRAMS: Omit<Program, "id" | "createdAt">[] = [
 ];
 
 /**
- * Mengambil semua program belajar dari Firestore
+ * Mengambil semua program belajar dari Firestore dengan in-memory cache
  */
 export async function getPrograms(): Promise<Program[]> {
-  try {
-    const q = query(collection(db, COLLECTION_NAME), orderBy("createdAt", "desc"));
-    const snapshot = await getDocs(q);
+  const now = Date.now();
+  if (programCache && now - programCache.timestamp < CACHE_TTL_MS) {
+    return programCache.data;
+  }
 
+  try {
+    const snapshot = await getDocs(collection(db, COLLECTION_NAME));
     if (snapshot.empty) {
-      const fallbackSnap = await getDocs(collection(db, COLLECTION_NAME));
-      if (!fallbackSnap.empty) {
-        return fallbackSnap.docs.map((d) => ({
-          id: d.id,
-          title: d.data().title || "Program Les",
-          desc: d.data().desc || "",
-          img: d.data().img || "",
-          featured: d.data().featured ?? true,
-          createdAt: d.data().createdAt?.toDate ? d.data().createdAt.toDate().toISOString() : null,
-        }));
-      }
       return [];
     }
 
-    return snapshot.docs.map((d) => ({
-      id: d.id,
-      title: d.data().title || "Program Les",
-      desc: d.data().desc || "",
-      img: d.data().img || "",
-      featured: d.data().featured ?? true,
-      createdAt: d.data().createdAt?.toDate ? d.data().createdAt.toDate().toISOString() : null,
-    }));
+    const items: Program[] = snapshot.docs.map((d) => {
+      const data = d.data();
+      return {
+        id: d.id,
+        title: data.title || "Program Les",
+        desc: data.desc || "",
+        img: data.img || "",
+        featured: data.featured ?? true,
+        createdAt: data.createdAt?.toDate ? data.createdAt.toDate().toISOString() : null,
+      };
+    });
+
+    // Urutkan berdasarkan createdAt desc
+    items.sort((a, b) => {
+      if (a.createdAt && b.createdAt) {
+        return String(b.createdAt).localeCompare(String(a.createdAt));
+      }
+      if (a.createdAt) return -1;
+      if (b.createdAt) return 1;
+      return 0;
+    });
+
+    programCache = { data: items, timestamp: now };
+    return items;
   } catch (error) {
     console.warn("Gagal memuat program dari Firestore:", error);
-    return [];
+    return programCache ? programCache.data : [];
   }
 }
 
@@ -106,6 +119,7 @@ export async function addProgram(
     featured: Boolean(data.featured),
     createdAt: serverTimestamp(),
   });
+  invalidateProgramCache();
   return docRef.id;
 }
 
@@ -121,6 +135,7 @@ export async function updateProgram(
     ...data,
     updatedAt: serverTimestamp(),
   });
+  invalidateProgramCache();
 }
 
 /**
@@ -129,6 +144,7 @@ export async function updateProgram(
 export async function deleteProgram(id: string): Promise<void> {
   const docRef = doc(db, COLLECTION_NAME, id);
   await deleteDoc(docRef);
+  invalidateProgramCache();
 }
 
 /**
@@ -146,5 +162,6 @@ export async function seedInitialPrograms(): Promise<number> {
     });
     count++;
   }
+  invalidateProgramCache();
   return count;
 }

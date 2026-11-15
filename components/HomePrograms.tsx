@@ -5,14 +5,23 @@ import Link from "next/link";
 import { getPrograms, Program } from "@lib/programService";
 import { FaBookOpen } from "react-icons/fa";
 
-export default function HomePrograms() {
-  const [programs, setPrograms] = useState<Program[]>([]);
-  const [loading, setLoading] = useState(true);
+interface HomeProgramsProps {
+  initialPrograms?: Program[];
+}
+
+export default function HomePrograms({ initialPrograms }: HomeProgramsProps) {
+  const getInitialSlice = (list?: Program[]) => {
+    if (!list || list.length === 0) return [];
+    const featuredList = list.filter((p) => p.featured);
+    return featuredList.length > 0 ? featuredList.slice(0, 6) : list.slice(0, 6);
+  };
+
+  const [programs, setPrograms] = useState<Program[]>(() => getInitialSlice(initialPrograms));
+  const [loading, setLoading] = useState(!initialPrograms || initialPrograms.length === 0);
 
   useEffect(() => {
     getPrograms()
       .then((data) => {
-        // Tampilkan program yang ditandai featured, atau maksimal 6 program pertama
         const featuredList = data.filter((p) => p.featured);
         setPrograms(featuredList.length > 0 ? featuredList.slice(0, 6) : data.slice(0, 6));
       })

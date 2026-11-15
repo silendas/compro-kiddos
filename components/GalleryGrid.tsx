@@ -4,9 +4,13 @@ import { useEffect, useState } from "react";
 import { getGallery, GalleryItem } from "@lib/galleryService";
 import { FaImages } from "react-icons/fa";
 
-export default function GalleryGrid() {
-  const [gallery, setGallery] = useState<GalleryItem[]>([]);
-  const [loading, setLoading] = useState(true);
+interface GalleryGridProps {
+  initialGallery?: GalleryItem[];
+}
+
+export default function GalleryGrid({ initialGallery }: GalleryGridProps) {
+  const [gallery, setGallery] = useState<GalleryItem[]>(initialGallery || []);
+  const [loading, setLoading] = useState(!initialGallery || initialGallery.length === 0);
 
   useEffect(() => {
     getGallery()

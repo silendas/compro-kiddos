@@ -5,9 +5,13 @@ import { getPrograms, Program } from "@lib/programService";
 import { SITE_CONFIG } from "@data/siteConfig";
 import { FaBookOpen } from "react-icons/fa";
 
-export default function ProgramsList() {
-  const [programs, setPrograms] = useState<Program[]>([]);
-  const [loading, setLoading] = useState(true);
+interface ProgramsListProps {
+  initialPrograms?: Program[];
+}
+
+export default function ProgramsList({ initialPrograms }: ProgramsListProps) {
+  const [programs, setPrograms] = useState<Program[]>(initialPrograms || []);
+  const [loading, setLoading] = useState(!initialPrograms || initialPrograms.length === 0);
 
   useEffect(() => {
     getPrograms()

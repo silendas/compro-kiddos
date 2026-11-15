@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ArtikelList from "@comp/ArtikelList";
+import { getArticles } from "@lib/articleService";
 
 import { SITE_CONFIG } from "@data/siteConfig";
 
@@ -35,7 +36,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ArtikelPage() {
+export default async function ArtikelPage() {
+  const articles = await getArticles();
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -84,7 +86,7 @@ export default function ArtikelPage() {
         </p>
       </header>
 
-      <ArtikelList />
+      <ArtikelList initialArticles={articles} />
     </div>
   );
 }

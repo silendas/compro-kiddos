@@ -1,6 +1,12 @@
 // lib/firebaseConfig.ts
-import { initializeApp, getApps, FirebaseApp } from "firebase/app";
-import { getFirestore, Firestore } from "firebase/firestore";
+import { initializeApp, getApps, getApp, FirebaseApp } from "firebase/app";
+import {
+  initializeFirestore,
+  getFirestore,
+  Firestore,
+  persistentLocalCache,
+  persistentMultipleTabManager,
+} from "firebase/firestore";
 import { getAuth, Auth } from "firebase/auth";
 
 const firebaseConfig = {
@@ -12,8 +18,23 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || "1:168588107421:web:6b97ddaa8618c8ff67be74",
 };
 
-const app: FirebaseApp = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
-const db: Firestore = getFirestore(app);
+const app: FirebaseApp = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+
+let db: Firestore;
+if (typeof window !== "undefined") {
+  try {
+    db = initializeFirestore(app, {
+      localCache: persistentLocalCache({
+        tabManager: persistentMultipleTabManager(),
+      }),
+    });
+  } catch {
+    db = getFirestore(app);
+  }
+} else {
+  db = getFirestore(app);
+}
+
 const auth: Auth = getAuth(app);
 
 export { db, auth };

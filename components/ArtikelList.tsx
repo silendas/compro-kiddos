@@ -6,9 +6,13 @@ import { getArticles, Article } from "@lib/articleService";
 
 const MAX_SNIPPET_LENGTH = 300;
 
-export default function ArtikelList() {
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [loading, setLoading] = useState(true);
+interface ArtikelListProps {
+  initialArticles?: Article[];
+}
+
+export default function ArtikelList({ initialArticles }: ArtikelListProps) {
+  const [articles, setArticles] = useState<Article[]>(initialArticles || []);
+  const [loading, setLoading] = useState(!initialArticles || initialArticles.length === 0);
 
   useEffect(() => {
     getArticles()

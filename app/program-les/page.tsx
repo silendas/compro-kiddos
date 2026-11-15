@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import ProgramsList from "@comp/ProgramsList";
 import { SITE_CONFIG } from "@data/siteConfig";
+import { getPrograms } from "@lib/programService";
 
 export const metadata: Metadata = {
   title: "Program Les & Bimbingan Belajar di Bogor",
@@ -34,7 +35,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ProgramLesPage() {
+export default async function ProgramLesPage() {
+  const programs = await getPrograms();
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -86,7 +88,7 @@ export default function ProgramLesPage() {
         </p>
       </header>
 
-      <ProgramsList />
+      <ProgramsList initialPrograms={programs} />
     </div>
   );
 }

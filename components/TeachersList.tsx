@@ -67,9 +67,13 @@ const COLOR_THEMES = [
   },
 ];
 
-export default function TeachersList() {
-  const [teachers, setTeachers] = useState<Teacher[]>([]);
-  const [loading, setLoading] = useState(true);
+interface TeachersListProps {
+  initialTeachers?: Teacher[];
+}
+
+export default function TeachersList({ initialTeachers }: TeachersListProps) {
+  const [teachers, setTeachers] = useState<Teacher[]>(initialTeachers || []);
+  const [loading, setLoading] = useState(!initialTeachers || initialTeachers.length === 0);
 
   useEffect(() => {
     getTeachers()

@@ -70,9 +70,13 @@ const COLOR_THEMES = [
   },
 ];
 
-export default function HomeTeachers() {
-  const [teachers, setTeachers] = useState<Teacher[]>([]);
-  const [loading, setLoading] = useState(true);
+interface HomeTeachersProps {
+  initialTeachers?: Teacher[];
+}
+
+export default function HomeTeachers({ initialTeachers }: HomeTeachersProps) {
+  const [teachers, setTeachers] = useState<Teacher[]>(initialTeachers || []);
+  const [loading, setLoading] = useState(!initialTeachers || initialTeachers.length === 0);
   const swiperRef = useRef<SwiperType | null>(null);
 
   useEffect(() => {

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { FaGraduationCap, FaWhatsapp, FaHome, FaHeart } from "react-icons/fa";
 import TeachersList from "@comp/TeachersList";
 import { SITE_CONFIG } from "@data/siteConfig";
+import { getTeachers } from "@lib/teacherService";
 
 export const metadata: Metadata = {
   title: "Profil Guru & Tenaga Pendidik - Bimbel Kiddos Zone Bogor",
@@ -28,7 +29,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function GuruPage() {
+export default async function GuruPage() {
+  const teachers = await getTeachers();
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -111,7 +113,7 @@ export default function GuruPage() {
 
         {/* Teachers Directory Component */}
         <div className="mt-8">
-          <TeachersList />
+          <TeachersList initialTeachers={teachers} />
         </div>
 
         {/* WhatsApp Consultation Banner */}
