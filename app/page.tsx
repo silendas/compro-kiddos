@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { FaWhatsapp, FaGraduationCap, FaBook, FaMapMarkerAlt } from "react-icons/fa";
+import { FaGraduationCap, FaBook, FaMapMarkerAlt } from "react-icons/fa";
 
 import HeroSlider from "@comp/HeroSlider";
 import HomeArticles from "@comp/HomeArticles";
@@ -19,10 +19,6 @@ import HomeFaq from "@comp/HomeFaq";
 import LearningMethodSection from "@comp/LearningMethodSection";
 
 export default function HomePage() {
-  const whatsappUrl = `https://wa.me/${SITE_CONFIG.contact.whatsappNumber}?text=${encodeURIComponent(
-    SITE_CONFIG.contact.whatsappMessage
-  )}`;
-
   return (
     <div id="beranda" className="flex flex-col items-center text-center bg-white scroll-mt-24">
       {/* Hero Swiper Slider */}
@@ -53,14 +49,14 @@ export default function HomePage() {
               dari jenjang TK, SD, SMP hingga SMA.
             </p>
             <a
-              href={whatsappUrl}
+              href={SITE_CONFIG.registrationUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-6 inline-flex items-center bg-orange-500 text-white text-lg font-bold px-6 py-3 rounded-2xl shadow-lg hover:bg-orange-600 transition baloo"
-              aria-label="Daftar Bimbingan Belajar via WhatsApp"
+              aria-label="Daftar Bimbingan Belajar Bimbel Kiddos Zone"
             >
-              <FaWhatsapp className="mr-2 text-2xl" />
-              Daftar via WhatsApp
+              <FaGraduationCap className="mr-2 text-2xl" />
+              Daftar Sekarang
             </a>
           </div>
         </div>

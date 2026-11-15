@@ -9,10 +9,6 @@ export default function ProgramsList() {
   const [programs, setPrograms] = useState<Program[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const whatsappUrl = `https://wa.me/${SITE_CONFIG.contact.whatsappNumber}?text=${encodeURIComponent(
-    SITE_CONFIG.contact.whatsappMessage
-  )}`;
-
   useEffect(() => {
     getPrograms()
       .then((data) => setPrograms(data))
@@ -76,11 +72,11 @@ export default function ProgramsList() {
               {item.desc}
             </p>
             <a
-              href={whatsappUrl}
+              href={SITE_CONFIG.registrationUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-5 flex justify-center bg-orange-500 text-white px-4 py-2.5 rounded-xl font-bold text-sm hover:bg-orange-600 transition duration-300 shadow baloo"
-              aria-label={`Daftar program ${item.title} via WhatsApp`}
+              aria-label={`Daftar program ${item.title}`}
             >
               Daftar Sekarang
             </a>

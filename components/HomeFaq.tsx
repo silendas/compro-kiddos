@@ -38,7 +38,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Bagaimana cara pendaftaran dan apakah ada konsultasi gratis?",
     answer:
-      "Pendaftaran sangat mudah! Anda dapat berkonsultasi gratis terlebih dahulu mengenai kebutuhan ananda melalui WhatsApp resmi kami di 0851 5672 2275. Tim kami akan dengan senang hati membantu memilihkan program terbaik.",
+      "Pendaftaran sangat mudah! Anda dapat mendaftar langsung secara online melalui tautan https://apps.bimbelkiddoszone.com/daftar atau berkonsultasi terlebih dahulu mengenai kebutuhan ananda melalui WhatsApp resmi kami di 0851 5672 2275. Tim kami akan dengan senang hati membantu memilihkan program terbaik.",
   },
 ];
 

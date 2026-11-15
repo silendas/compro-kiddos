@@ -2,6 +2,7 @@ export const SITE_CONFIG = {
   name: "Bimbel Kiddos Zone",
   tagline: "Cerdas Ceria Bertaqwa",
   url: "https://www.bimbelkiddoszone.com",
+  registrationUrl: "https://apps.bimbelkiddoszone.com/daftar",
   description:
     "Bimbel Kiddos Zone Bogor - Bimbingan belajar terbaik di Bogor untuk jenjang PraCalis, Calistung, SD, SMP, hingga SMA. Menyediakan les privat matematika, bahasa Inggris, BTQ Al-Qur'an, dan bimbingan belajar interaktif menyenangkan.",
   keywords: [

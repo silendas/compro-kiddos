@@ -252,7 +252,7 @@ export default function JsonLd() {
             name: "Bagaimana cara pendaftaran dan apakah ada konsultasi gratis?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Pendaftaran dan konsultasi gratis dapat dilakukan melalui WhatsApp resmi di 0851 5672 2275 atau dengan berkunjung langsung ke cabang terdekat di wilayah Bogor.",
+              text: "Pendaftaran dapat dilakukan secara online melalui tautan resmi https://apps.bimbelkiddoszone.com/daftar, atau berkonsultasi gratis terlebih dahulu melalui WhatsApp di 0851 5672 2275 serta berkunjung langsung ke cabang terdekat di wilayah Bogor.",
             },
           },
         ],

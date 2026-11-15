@@ -18,10 +18,6 @@ const menuItems = [
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const whatsappUrl = `https://wa.me/${SITE_CONFIG.contact.whatsappNumber}?text=${encodeURIComponent(
-    "Halo, saya ingin mendaftar bimbel Kiddos Zone. Bisa dibantu?"
-  )}`;
-
   const handleRegistrationClick = () => {
     event({
       action: "click_pendaftaran",
@@ -98,7 +94,7 @@ export default function Navbar() {
 
           <li className="pt-3 md:pt-0">
             <a
-              href={whatsappUrl}
+              href={SITE_CONFIG.registrationUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="bg-orange-500 text-white px-5 py-2 rounded-full font-bold text-base md:text-lg hover:bg-orange-600 transition block text-center md:inline-block shadow-md hover:shadow-orange-400/40 baloo"
