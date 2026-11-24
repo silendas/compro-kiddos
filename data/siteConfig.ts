@@ -31,8 +31,8 @@ export const SITE_CONFIG = {
     "biaya bimbel calistung bogor",
   ],
   contact: {
-    phone: "0851 5672 2275",
-    whatsappNumber: "6285156722275",
+    phone: "0851 5673 2275",
+    whatsappNumber: "6285156732275",
     whatsappMessage:
       "Halo, saya tertarik untuk mendaftar di Bimbel Kiddos Zone! Bisa dibantu?",
     address: {
@@ -51,7 +51,7 @@ export const SITE_CONFIG = {
     instagram: "https://www.instagram.com/bimbelkiddoszone",
     facebook: "https://www.facebook.com/share/18e1n5uo3y/",
     tiktok: "https://www.tiktok.com/@bimbelkiddoszone1",
-    whatsapp: "https://wa.me/6285156722275",
+    whatsapp: "https://wa.me/6285156732275",
   },
   branches: [
     {

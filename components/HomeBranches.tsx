@@ -85,7 +85,7 @@ export default function HomeBranches({ initialBranches }: HomeBranchesProps) {
                 {branch.phone && (
                   <a
                     href={`https://wa.me/${(() => {
-                      let p = branch.phone.replace("5673", "5672").replace(/[^0-9]/g, "");
+                      let p = branch.phone.replace(/[^0-9]/g, "");
                       if (p.startsWith("0")) p = "62" + p.slice(1);
                       return p;
                     })()}`}
@@ -95,11 +95,11 @@ export default function HomeBranches({ initialBranches }: HomeBranchesProps) {
                   >
                     <FaPhoneAlt className="text-orange-500 text-[10px]" />{" "}
                     {(() => {
-                      const d = branch.phone.replace("5673", "5672").replace(/[^0-9]/g, "");
+                      const d = branch.phone.replace(/[^0-9]/g, "");
                       if (d.length === 12 && d.startsWith("08")) {
                         return `${d.slice(0, 4)} ${d.slice(4, 8)} ${d.slice(8)}`;
                       }
-                      return branch.phone.replace("5673", "5672");
+                      return branch.phone;
                     })()}
                   </a>
                 )}

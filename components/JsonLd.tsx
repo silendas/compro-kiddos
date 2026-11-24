@@ -17,7 +17,7 @@ export default function JsonLd() {
         logo: `${SITE_CONFIG.url}/assets/Logo_Kiddos.png`,
         image: `${SITE_CONFIG.url}/og-image.jpg`,
         description: SITE_CONFIG.description,
-        telephone: "+6285156722275",
+        telephone: "+6285156732275",
         priceRange: "$$",
         currenciesAccepted: "IDR",
         paymentAccepted: "Cash, Transfer Bank",
@@ -252,7 +252,7 @@ export default function JsonLd() {
             name: "Bagaimana cara pendaftaran dan apakah ada konsultasi gratis?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Pendaftaran dapat dilakukan secara online melalui tautan resmi https://apps.bimbelkiddoszone.com/daftar, atau berkonsultasi gratis terlebih dahulu melalui WhatsApp di 0851 5672 2275 serta berkunjung langsung ke cabang terdekat di wilayah Bogor.",
+              text: "Pendaftaran dapat dilakukan secara online melalui tautan resmi https://apps.bimbelkiddoszone.com/daftar, atau berkonsultasi gratis terlebih dahulu melalui WhatsApp di 0851 5673 2275 serta berkunjung langsung ke cabang terdekat di wilayah Bogor.",
             },
           },
         ],
